@@ -1,28 +1,26 @@
-"use client";
-import { SignIn, SignUp } from "@clerk/nextjs";
+import Link from "next/link";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { auth } from "@clerk/nextjs";
 
 const IntroPage = () => {
-  const { push } = useRouter();
+  const { userId } = auth();
   return (
     <div className="w-full h-full">
-      <div className="mx-auto h-[calc(100vh-72px)] w-1/2 text-center flex flex-col justify-center items-center gap-4">
-        <p className="text-5xl font-bold tracking-wide">
+      <div className="mx-auto h-[calc(100vh-72px)] w-[60%] text-center flex flex-col justify-center items-center gap-8">
+        <p className="text-5xl font-bold text-black  dark:text-white">
           A powerful Chat Application with a variety of functions
         </p>
-        <div className="flex justify-center items-center gap-3">
-          <Button className="cursor-pointer" onClick={() => push("/sign-up")}>
-            GetStarted
-          </Button>
-          <Button
-            onClick={() => {
-              console.log("clicked");
-              window.scrollTo(0, 5000);
-            }}
-          >
-            Check Features
-          </Button>
+        <div className="flex justify-center items-center gap-3 z-0">
+          {userId ? (
+            <Link href="/chat" className="cursor-pointer">
+              <Button className="font-bold">Get Started</Button>
+            </Link>
+          ) : (
+            <Link href="/sign-up" className="cursor-pointer">
+              <Button className="font-bold">Get Started</Button>
+            </Link>
+          )}
+          <Button className="z-0 font-bold">Check Features</Button>
         </div>
       </div>
     </div>
