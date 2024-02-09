@@ -9,7 +9,7 @@ import {
   UserButton,
   useAuth,
 } from "@clerk/nextjs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ const Navbar = () => {
   console.log(userId);
   console.log(isLoaded);
   return (
-    <div className="w-full py-4 ">
+    <div className="w-full py-4">
       <div className="flex flex-row items-center gap-3">
         {/* <BiLogoAmazon size={40} /> */}
         <Link href="/" className="font-bold text-4xl cursor-pointer z-10">
@@ -32,7 +32,7 @@ const Navbar = () => {
         <div className="flex-1 flex items-center justify-end gap-3">
           <ToggleButton />
           {!userId && (
-            <Link href="/sign-in" className="z-0  ">
+            <Link href="/sign-in" className="z-0">
               <Button className="font-bold flex items-center">
                 <LogIn className="mr-2 h-4 w-4" /> Login
               </Button>
