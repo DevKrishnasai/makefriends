@@ -7,8 +7,8 @@ import React from "react";
 
 const page = () => {
   return (
-    <div id="bg" className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">
-      <div className="flex flex-col w-1/3 border-black dark:border-white  h-full  bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border ">
+    <div className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">
+      <div className="flex flex-col w-1/3 border rounded-2xl border-black dark:border-white">
         <form className="p-2 z-0">
           <Input
             type="search"
