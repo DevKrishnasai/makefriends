@@ -1,11 +1,19 @@
+import { cn } from "@/lib/utils";
 import React from "react";
+interface SizeProps {
+  size?: number;
+}
 
-const Loading = () => {
+const Loading = ({ size }: SizeProps) => {
+  console.log(size);
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className="w-5 h-5 text-gray-200 animate-spin fill-blue-600"
+        className={cn(
+          "text-gray-200 animate-spin fill-black ",
+          size ? `w-${size} h-${size}` : "w-5 h-5"
+        )}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

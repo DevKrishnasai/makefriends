@@ -94,3 +94,11 @@
   border-radius: 20px; /* roundness of the scroll thumb */
   border: 3px solid black; /* creates padding around scroll thumb */
 }
+
+.bgImage {
+  background-image: url("/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}

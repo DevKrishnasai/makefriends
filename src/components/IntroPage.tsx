@@ -13,7 +13,7 @@ const IntroPage = () => {
         <div className="flex justify-center items-center gap-3 z-0">
           {userId ? (
             <Link href="/chat" className="cursor-pointer">
-              <Button className="font-bold">Get Started</Button>
+              <Button className="font-bold">Chat</Button>
             </Link>
           ) : (
             <Link href="/sign-up" className="cursor-pointer">

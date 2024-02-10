@@ -1,17 +1,6 @@
 "use client";
 import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Button } from "./ui/button";
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import { RiArrowDropDownFill } from "react-icons/ri";
+import { BiDotsVerticalRounded, BiPhone, BiVideo } from "react-icons/bi";
 import { Input } from "./ui/input";
 import ChatBubble from "./ChatBubble";
 import { disableScrolling, enableScrolling } from "@/lib/scrollFunctions";
@@ -22,7 +11,7 @@ const ChatScreen = () => {
   console.log(theme);
   return (
     <>
-      <div className="w-full p-3 flex justify-between items-center border-2 rounded-lg">
+      <div className="p-2 px-3 flex justify-between items-center border-black dark:border-white w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border">
         <div className="flex items-center gap-3">
           <div className="avatar">
             <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -35,7 +24,9 @@ const ChatScreen = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <DropdownMenu>
+          <BiPhone size={23} />
+          <BiVideo size={23} />
+          {/* <DropdownMenu>
             <DropdownMenuTrigger className="z-0 flex items-center" asChild>
               <Button variant="outline" className="bg-transparent">
                 select
@@ -49,16 +40,15 @@ const ChatScreen = () => {
               <DropdownMenuItem>Hindi</DropdownMenuItem>
               <DropdownMenuItem>English</DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           <BiDotsVerticalRounded size={23} className="font-bold" />
         </div>
       </div>
       <div
         id="chatscreen"
-        className={`h-[calc(100vh-190px)] border-2 rounded-lg px-2 overflow-y-auto scroll-smooth z-0 ${
-          theme === "light" ? " apply" : " "
-        }`}
+        className={`h-[calc(100vh-190px)]  px-2 overflow-y-auto scroll-smooth z-0 w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-black dark:border-white
+        ${theme === "light" ? " apply" : " "}`}
         onScroll={() => disableScrolling("#chatscreen")}
         onMouseMove={() => enableScrolling("#chatscreen")}
         // onClick={enableScrolling}
@@ -74,9 +64,13 @@ const ChatScreen = () => {
         <ChatBubble />
         <ChatBubble />
       </div>
-      <div className="w-full flex justify-between items-center border-2 rounded-lg">
-        <Input placeholder="type a message..." type="text" className="z-0" />
-        <Input type="file" className="z-0 w-6" />
+      <div className="w-full flex justify-between items-center border-1 bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-black dark:border-white">
+        <Input
+          placeholder="type a message..."
+          type="text"
+          className="z-0 bg-transparent "
+        />
+        {/* <Input type="file" className="z-0 w-6" /> */}
       </div>
     </>
   );
