@@ -5,7 +5,6 @@ interface SizeProps {
 }
 
 const Loading = ({ size }: SizeProps) => {
-  console.log(size);
   return (
     <div role="status">
       <svg

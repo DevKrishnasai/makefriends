@@ -8,7 +8,7 @@ import React from "react";
 const page = () => {
   return (
     <div className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">
-      <div className="flex flex-col w-1/3 border rounded-2xl border-black dark:border-white">
+      <div className="flex flex-col w-1/3 border rounded-md border-black dark:border-white">
         <form className="p-2 z-0">
           <Input
             type="search"

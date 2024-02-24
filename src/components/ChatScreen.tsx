@@ -8,7 +8,6 @@ import { useTheme } from "next-themes";
 
 const ChatScreen = () => {
   const { theme } = useTheme();
-  console.log(theme);
   return (
     <>
       <div className="p-2 px-3 flex justify-between items-center border-black dark:border-white w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border">

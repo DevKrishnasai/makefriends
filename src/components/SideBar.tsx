@@ -7,7 +7,6 @@ import { disableScrolling, enableScrolling } from "@/lib/scrollFunctions";
 
 const SideBar = () => {
   const { theme } = useTheme();
-  console.log(theme);
 
   return (
     // <div className="w-full overflow-auto z-0">
