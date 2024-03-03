@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    // "emitDecoratorMetadata": true,
+    // "experimentalDecorators": true,
+    // "lib": ["ES6"],
+    "module": "NodeNext"
+    // "moduleResolution": "NodeNext"
+    // "noImplicitAny": true,
+    // "sourceMap": false
+    // "target": "es6"
+  },
+
+  "include": ["src/**/*"]
+}

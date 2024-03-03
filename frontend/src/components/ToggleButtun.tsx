@@ -14,11 +14,11 @@ export function ToggleButton() {
     // </Button>
 
     theme === "dark" ? (
-      <Button onClick={() => setTheme("light")} className="z-10 rounded-full">
+      <Button onClick={() => setTheme("light")} className="z-0 rounded-full">
         <MdLightMode />
       </Button>
     ) : (
-      <Button onClick={() => setTheme("dark")} className="z-10 rounded-full">
+      <Button onClick={() => setTheme("dark")} className="z-0 rounded-full">
         <MdDarkMode />
       </Button>
     )

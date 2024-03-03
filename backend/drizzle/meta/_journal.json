@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709386558062,
+      "tag": "0000_lowly_impossible_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1709391676680,
+      "tag": "0001_sweet_puff_adder",
+      "breakpoints": true
+    }
+  ]
+}

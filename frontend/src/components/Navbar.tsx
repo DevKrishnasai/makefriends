@@ -22,6 +22,7 @@ const Navbar = () => {
   const { theme } = useTheme();
   const { userId } = useAuth();
   const router = useRouter();
+  // if (!userId) return redirect("/");
 
   return (
     <div className="w-full py-4">
@@ -30,7 +31,7 @@ const Navbar = () => {
         <Link href="/" className="ml-3 font-bold text-3xl cursor-pointer z-10">
           MakeFriends
         </Link>
-        <div className="flex-1 flex items-center justify-end gap-3">
+        <div className="flex-1 flex items-center justify-end gap-3 z-0">
           <ToggleButton />
           {!userId && (
             <Link href="/sign-in" className="z-0">
