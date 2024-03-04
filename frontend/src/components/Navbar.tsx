@@ -40,7 +40,7 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-          {userId && (
+          {/* {userId && (
             <>
               <ClerkLoading>
                 <Button>
@@ -53,7 +53,7 @@ const Navbar = () => {
                 </Button>
               </ClerkLoaded>
             </>
-          )}
+          )} */}
 
           {userId && (
             <>

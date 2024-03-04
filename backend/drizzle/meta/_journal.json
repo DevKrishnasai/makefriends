@@ -15,6 +15,27 @@
       "when": 1709391676680,
       "tag": "0001_sweet_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709491569252,
+      "tag": "0002_special_omega_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1709491665199,
+      "tag": "0003_black_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1709491848378,
+      "tag": "0004_bitter_slapstick",
+      "breakpoints": true
     }
   ]
 }
