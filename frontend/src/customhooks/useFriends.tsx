@@ -1,6 +1,5 @@
 "use client";
 
-import { IUser } from "@/lib/types";
 import { Context } from "@/providers/globalProvider";
 import { useContext, useEffect, useState } from "react";
 
@@ -30,6 +29,7 @@ export const useFriends = () => {
           }
         );
         const data = await friendsData.json();
+        console.log("total", data);
         context.setFriends(data.users);
       } catch (error) {
         console.log(error);

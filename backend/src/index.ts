@@ -34,16 +34,21 @@ app.use(
 app.use(`/${api}`, userRoute);
 app.use(`/${api}/messages`, messagesRoute);
 
-global.onlineUsers = new Map<string, string>();
-io.on("connection", (socket) => {
-  console.log(`user with id-${socket.id} joined`);
-  socket.on("add-user", (userId) => {
-    console.log(userId);
-    global.onlineUsers.set(userId, socket.id);
-  });
+const onlineUsers = {};
 
-  socket.on("disconnect", (userId) => {
-    global.onlineUsers.delete(userId);
+io.on("connection", (socket) => {
+  const userId: string = socket.handshake.query.userId.toString();
+  if (userId !== undefined) {
+    onlineUsers[userId] = socket.id;
+  }
+  console.log(`user with id-${userId} joined`);
+
+  io.emit("onlineUsers", Object.keys(onlineUsers));
+
+  socket.on("disconnect", () => {
+    console.log(`user with id-${userId} disconnected`);
+    delete onlineUsers[userId];
+    io.emit("onlineUsers", Object.keys(onlineUsers));
   });
 });
 

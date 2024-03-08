@@ -26,6 +26,7 @@ export const useChats = () => {
               senderId: context.user?.id,
               receiverId: context.select?.id,
             }),
+            cache: "no-store",
           }
         );
         const json = await data.json();
@@ -38,11 +39,6 @@ export const useChats = () => {
     };
     if (context.select) {
       fetchChat();
-      context.setMessage((prev) => ({
-        ...prev,
-        senderId: context.user!.id,
-        receiverId: context.select!.id,
-      }));
     }
 
     return () => {

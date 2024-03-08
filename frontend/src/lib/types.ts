@@ -23,6 +23,8 @@ export interface IContext {
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
   friends: IUser[];
   setFriends: React.Dispatch<React.SetStateAction<IUser[]>>;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface IMessage {
@@ -37,8 +39,8 @@ export interface IMessage {
 export type MessageType = "text" | "image" | "file";
 
 export interface ISocketContext {
-  socket: Socket;
-  setSocket: React.Dispatch<React.SetStateAction<Socket>>;
+  socket: Socket | null;
+  setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
   onlineUsers: string[];
   setOnlineUsers: React.Dispatch<React.SetStateAction<string[]>>;
 }

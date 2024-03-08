@@ -1,22 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { SocketContext } from "@/providers/SocketProvider";
+import React, { useContext, useEffect } from "react";
 
-export const useSocket = () => {
-  const socket = io("http://localhost:4000");
-  const [loading, setLoading] = useState(false);
-
+const useSocket = () => {
+  const context = useContext(SocketContext);
   useEffect(() => {
-    setLoading(true);
-    socket.on("connect", () => {
-      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    });
-
-    socket.on("disconnect", () => {
-      console.log(socket.id); // undefined
-    });
-    setLoading(false);
-  }, []);
-
-  return [socket, loading];
+    if (context?.socket) {
+      console.log("in useSocket useEffect");
+      context.socket.on("connect", () => {
+        console.log("connected to socket");
+      });
+      context.socket.on("disconnect", () => {
+        console.log("disconnected from socket");
+      });
+    } else {
+      console.log("context is null");
+    }
+  }, [context?.socket]);
+  return <div>useSocket</div>;
 };
+
+export default useSocket;

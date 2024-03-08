@@ -21,6 +21,8 @@ export const Context = createContext<IContext>({
   setMessages: () => {},
   friends: [],
   setFriends: () => {},
+  search: "",
+  setSearch: () => {},
 });
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
@@ -36,6 +38,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [friends, setFriends] = useState<IUser[]>([]);
   const [typeOfMessage, setTypeOfMessage] = useState<MessageType>("text");
+  const [search, setSearch] = useState<string>("");
 
   return (
     <Context.Provider
@@ -52,6 +55,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setMessages,
         friends,
         setFriends,
+        search,
+        setSearch,
       }}
     >
       {children}

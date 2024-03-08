@@ -6,9 +6,37 @@ import { Input } from "@/components/ui/input";
 import useInitialFetch from "@/customhooks/useInitialFetch";
 import Loading from "@/components/Loading";
 import { SocketProvider } from "@/providers/SocketProvider";
+import { useContext, useEffect } from "react";
+import { Context } from "@/providers/globalProvider";
+import SearchResultScreen from "@/components/SearchResultScreen";
+import useSocket from "@/customhooks/useSocket";
 
 const page = () => {
   const userLoading = useInitialFetch();
+  const context = useContext(Context);
+  const controller = new AbortController();
+  useEffect(() => {
+    console.log("In useEffect for searching a user (useEffect)");
+    const fetchUser = async () => {
+      console.log("Now fetching users  for searching a user (backend)");
+      try {
+        let data = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/${context.user?.id}/${context.search}`,
+          {
+            signal: controller.signal,
+          }
+        );
+        let userData = await data.json();
+        console.log(userData);
+        context.setFriends(userData.users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (context.search) {
+      fetchUser();
+    }
+  }, [context.search]);
   return (
     <SocketProvider>
       <div className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">
@@ -24,9 +52,10 @@ const page = () => {
                   type="search"
                   placeholder="search..."
                   className="bg-transparent"
+                  onChange={(e) => context.setSearch(e.target.value)}
                 />
               </form>
-              <SideBar />
+              {context.search.length ? <SearchResultScreen /> : <SideBar />}
             </div>
             <div className="w-full flex flex-col gap-3 ">
               <ChatScreen />

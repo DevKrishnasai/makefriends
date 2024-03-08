@@ -24,7 +24,7 @@ const ChatScreen = () => {
     }, 100);
   }, [context.messages]);
 
-  const sendMessage = async () => {
+  const sendMessage = async (id: string) => {
     console.log("i am sending message ");
     try {
       const data = await fetch(
@@ -36,7 +36,7 @@ const ChatScreen = () => {
           },
           method: "POST",
           body: JSON.stringify({
-            id: context.message.id,
+            id,
             senderId: context.user?.id,
             receiverId: context.select?.id,
             message: context.message.message,
@@ -68,22 +68,6 @@ const ChatScreen = () => {
             <div className="flex items-center gap-3">
               <BiPhone size={23} />
               <BiVideo size={23} />
-              {/* <DropdownMenu>
-            <DropdownMenuTrigger className="z-0 flex items-center" asChild>
-              <Button variant="outline" className="bg-transparent">
-                select
-                <RiArrowDropDownFill size={22} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Change Language</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Telugu</DropdownMenuItem>
-              <DropdownMenuItem>Hindi</DropdownMenuItem>
-              <DropdownMenuItem>English</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
-
               <BiDotsVerticalRounded size={23} className="font-bold" />
             </div>
           </div>
@@ -130,21 +114,38 @@ const ChatScreen = () => {
                     return;
                   }
                   const id = uuid().toString();
-                  context.setMessage((prev) => ({
-                    ...prev,
+                  context.setMessage({
                     id,
-                  }));
+                    messageType: "text",
+                    receiverId: context.select!.id,
+                    senderId: context.user!.id,
+                    message: context.message.message,
+                  });
                   context.setMessages((prev) => [
                     ...prev,
-                    { ...context.message, id },
+                    {
+                      id,
+                      messageType: "text",
+                      receiverId: context.select!.id,
+                      senderId: context.user!.id,
+                      message: context.message.message,
+                    },
                   ]);
                   context.setMessage((prev) => ({
-                    ...prev,
                     id: "",
-                    message: "",
                     messageType: "text",
+                    receiverId: context.select!.id,
+                    senderId: context.user!.id,
+                    message: "",
                   }));
-                  sendMessage();
+                  console.log({
+                    id,
+                    messageType: "text",
+                    receiverId: context.select!.id,
+                    senderId: context.user!.id,
+                    message: context.message.message,
+                  });
+                  sendMessage(id);
                 }
               }}
             />
