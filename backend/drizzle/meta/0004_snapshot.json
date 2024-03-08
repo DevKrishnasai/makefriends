@@ -1,6 +1,6 @@
 {
-  "id": "6bcda3a5-4d24-4b18-89a4-6132365f23cd",
-  "prevId": "3f15cdbd-1e2d-47b2-8d26-2085bd9b74c0",
+  "id": "d6de2bb0-c849-4497-93be-9a675045c3bd",
+  "prevId": "3bd5b157-b4b9-4f97-9e46-178b893604f8",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -113,7 +113,7 @@
         },
         "friends": {
           "name": "friends",
-          "type": "varchar[]",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -121,25 +121,12 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "users_friends_users_id_fk": {
-          "name": "users_friends_users_id_fk",
-          "tableFrom": "users",
-          "tableTo": "users",
-          "columnsFrom": [
-            "friends"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }

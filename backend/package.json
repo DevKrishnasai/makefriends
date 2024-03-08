@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon",
     "generate": "drizzle-kit generate:pg",
-    "migrate": "drizzle-kit push:pg"
+    "migrate": "drizzle-kit push:pg",
+    "seed": "drizzle-kit seed:pg",
+    "studio": "drizzle-kit studio"
   },
   "keywords": [],
   "author": "",

@@ -1,27 +1,27 @@
 "use client";
+import { IUser } from "@/lib/types";
+import { Context } from "@/providers/globalProvider";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const useInitialFetch = () => {
-  // Fetch the current user using Clerk's useUser hook
   const { user: currentUser } = useUser();
-
-  // State variables to manage user data and loading state
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-
-  // Create an AbortController to handle aborting the fetch if needed
+  const context = useContext(Context);
   const controller = new AbortController();
 
   useEffect(() => {
-    // Function to fetch user data
+    console.log(
+      "In useEffect for checking the user is in db or not (useEffect)"
+    );
     const fetchUser = async () => {
       setLoading(true);
-
       try {
-        // Make a POST request to the server to update or create user data
-        let data = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/${currentUser?.id}`,
+        console.log(
+          "Now sending the deatils to backend to check user (backend)"
+        );
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/user`,
           {
             signal: controller.signal,
             headers: {
@@ -30,38 +30,39 @@ const useInitialFetch = () => {
             method: "POST",
             body: JSON.stringify({
               id: currentUser?.id,
-              name: currentUser?.fullName,
-              img: currentUser?.hasImage
+              username: currentUser?.fullName,
+              avatar: currentUser?.hasImage
                 ? currentUser?.imageUrl
                 : `https://robohash.org/${currentUser?.firstName}`,
-              email: currentUser?.emailAddresses,
-              bio: "",
+              email: currentUser?.emailAddresses[0].emailAddress,
             }),
           }
         );
-
-        // Parse the response data
-        let userData = await data.json();
-        setUser(userData.user[0]);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
         setLoading(false);
       }
     };
+    if (currentUser) {
+      fetchUser();
 
-    // Call the fetchUser function when the component using this hook mounts
-    fetchUser();
+      context.setUser({
+        id: currentUser!.id,
+        username: currentUser!.fullName! || currentUser!.firstName!,
+        email: currentUser!.emailAddresses[0].emailAddress,
+        avatar: currentUser!.hasImage
+          ? currentUser!.imageUrl
+          : `https://robohash.org/${currentUser?.firstName}`,
+      });
+    }
 
-    // Cleanup function to abort the fetch if the component unmounts
     return () => {
       controller.abort();
       setLoading(false);
     };
-  }, [currentUser?.id]);
-
-  // Return the user data and loading state for the component to use
-  return [user, loading];
+  }, [currentUser]);
+  return loading;
 };
 
 export default useInitialFetch;

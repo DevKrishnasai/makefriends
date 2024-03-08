@@ -1,22 +1,24 @@
 "use client";
-import React from "react";
-import SingleRow from "./SingleRow";
+import React, { useContext } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { useFriends } from "@/customhooks/useFriends";
+import { IUser } from "@/lib/types";
+import { Context } from "@/providers/globalProvider";
 import { disableScrolling, enableScrolling } from "@/lib/scrollFunctions";
+import SingleRow from "./SingleRow";
+import Loading from "./Loading";
 
 const SideBar = () => {
   const { theme } = useTheme();
+  const loading = useFriends();
+  const context = useContext(Context);
 
-  return (
-    // <div className="w-full overflow-auto z-0">
+  return !loading ? (
     <div
-      // className={`ml-2 flex flex-col gap-2 z-0 overflow-y-scroll ${
-      //   theme == "light" ? " apply-bar-color" : ""
-      // }`}
       id="sidebar"
       className={cn(
-        "ml-2 flex flex-col z-0 overflow-y-auto scroll-smooth divide-slate-950  dark:divide-sky-200",
+        "mx-2 flex flex-col z-0 overflow-y-auto scroll-smooth divide-slate-950  dark:divide-sky-200",
         theme === "light" ? "apply" : " "
       )}
       onScroll={() => disableScrolling("#sidebar")}
@@ -28,23 +30,21 @@ const SideBar = () => {
       onTouchEnd={() => enableScrolling("#sidebar")}
       onTouchCancel={() => enableScrolling("#sidebar")}
     >
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
-      <SingleRow />
+      {context.friends.map((friend: IUser) => {
+        return (
+          <SingleRow
+            key={friend.id}
+            user={friend}
+            select={context.select}
+            onSelect={context.setSelect}
+          />
+        );
+      })}
     </div>
-    // </div>
+  ) : (
+    <div className="w-full h-full flex justify-center items-center">
+      <Loading />
+    </div>
   );
 };
 

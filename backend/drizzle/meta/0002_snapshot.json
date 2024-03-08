@@ -1,6 +1,6 @@
 {
-  "id": "4fff7e37-d747-4b17-8bde-4ff11c6d6ba0",
-  "prevId": "ad4d7af5-f38f-4d41-b738-0df54bcdb070",
+  "id": "5f805ed2-f709-455d-b55e-77a461871c12",
+  "prevId": "d669e7a3-adff-4373-9f6b-049b2c0678a3",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
@@ -28,13 +28,13 @@
         },
         "sender_id": {
           "name": "sender_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
         "receiver_id": {
           "name": "receiver_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -83,7 +83,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
@@ -115,31 +115,19 @@
           "name": "friends",
           "type": "varchar[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": []
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "users_friends_users_id_fk": {
-          "name": "users_friends_users_id_fk",
-          "tableFrom": "users",
-          "tableTo": "users",
-          "columnsFrom": [
-            "friends"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }

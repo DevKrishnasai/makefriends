@@ -1,4 +1,3 @@
-// Define data types and tables
 import { varchar, text, timestamp, pgTable } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -7,26 +6,22 @@ export const users = pgTable("users", {
   avatar: varchar("avatar").notNull(),
   email: varchar("email").notNull(),
   bio: text("bio"),
-  friends: varchar("friends")
-    .array()
-    .references(() => users.id, {
-      onUpdate: "no action",
-      onDelete: "cascade",
-    }),
+  friends: text("friends"),
   createdAt: timestamp("created_at", {
     mode: "string",
     withTimezone: true,
-  }),
+  }).defaultNow(),
 });
 
 export const messages = pgTable("messages", {
   id: varchar("id").primaryKey(),
-  content: text("content").notNull(),
-  contentType: varchar("content_type").notNull(),
+  messageFromAndBy: varchar("message_from_and_by").notNull(),
+  message: text("content").notNull(),
+  messageType: varchar("content_type").notNull(),
   senderId: varchar("sender_id").references(() => users.id),
   receiverId: varchar("receiver_id").references(() => users.id),
   createdAt: timestamp("created_at", {
     mode: "string",
     withTimezone: true,
-  }),
+  }).defaultNow(),
 });

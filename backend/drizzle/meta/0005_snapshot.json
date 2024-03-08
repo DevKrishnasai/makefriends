@@ -1,6 +1,6 @@
 {
-  "id": "83a02ca2-88bc-403c-998d-22834bd92b0a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "d636b471-81c4-4022-a3db-9e7acf45e419",
+  "prevId": "d6de2bb0-c849-4497-93be-9a675045c3bd",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -42,7 +42,8 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -113,10 +114,9 @@
         },
         "friends": {
           "name": "friends",
-          "type": "varchar[]",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": []
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",

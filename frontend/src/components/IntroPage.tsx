@@ -20,7 +20,9 @@ const IntroPage = () => {
               <Button className="font-bold">Get Started</Button>
             </Link>
           )}
-          <Button className="z-0 font-bold">Check Features</Button>
+          <Link href="/features" className="cursor-pointer">
+            <Button className="z-0 font-bold">Check Features</Button>
+          </Link>
         </div>
       </div>
     </div>
