@@ -1,12 +1,12 @@
-import { varchar, text, timestamp, pgTable } from "drizzle-orm/pg-core";
+import { varchar, text, timestamp, pgTable, json } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().notNull(),
   username: varchar("username").notNull(),
   avatar: varchar("avatar").notNull(),
   email: varchar("email").notNull(),
-  bio: text("bio"),
-  friends: text("friends"),
+  bio: text("bio").default("Hey ,I am using MakeFriends"),
+  friends: json("friends").default({ friends: [] }),
   createdAt: timestamp("created_at", {
     mode: "string",
     withTimezone: true,
@@ -25,3 +25,5 @@ export const messages = pgTable("messages", {
     withTimezone: true,
   }).defaultNow(),
 });
+
+export type userType = typeof users.$inferSelect;

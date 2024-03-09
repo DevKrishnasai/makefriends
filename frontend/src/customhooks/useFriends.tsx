@@ -9,13 +9,9 @@ export const useFriends = () => {
   const controller = new AbortController();
 
   useEffect(() => {
-    console.log("In useEffect for fetching the friends in db (useEffect)");
     const fetchFriends = async () => {
       setLoading(true);
       try {
-        console.log(
-          "Now sending a request to backend for getting friends (backend)"
-        );
         const friendsData = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/${
             process.env.NEXT_PUBLIC_API
@@ -29,7 +25,6 @@ export const useFriends = () => {
           }
         );
         const data = await friendsData.json();
-        console.log("total", data);
         context.setFriends(data.users);
       } catch (error) {
         console.log(error);

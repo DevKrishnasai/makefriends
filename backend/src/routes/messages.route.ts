@@ -2,6 +2,7 @@ import express from "express";
 import { db } from "../db/db-connection";
 import { messages, users } from "../db/schema";
 import { asc, eq, ne, or } from "drizzle-orm";
+import { io, onlineUsers } from "../index";
 
 const router = express.Router();
 
@@ -32,14 +33,30 @@ router.post("/get", async (req, res) => {
 router.post("/post", async (req, res) => {
   const { id, senderId, receiverId, message, messageType } = req.body;
   try {
-    await db.insert(messages).values({
-      id,
-      senderId,
-      receiverId,
-      message,
-      messageType,
-      messageFromAndBy: senderId + "_" + receiverId,
-    });
+    const msg = await db
+      .insert(messages)
+      .values({
+        id,
+        senderId,
+        receiverId,
+        message,
+        messageType,
+        messageFromAndBy: senderId + "_" + receiverId,
+      })
+      .returning();
+    if (onlineUsers[receiverId]) {
+      console.log("sent to online user");
+
+      io.to(onlineUsers[receiverId]).emit("new_message", {
+        id: msg[0].id,
+        message: msg[0].message,
+        messageType: msg[0].messageType,
+        senderId: msg[0].senderId,
+        receiverId: msg[0].receiverId,
+        messageFromAndBy: msg[0].messageFromAndBy,
+        createdAt: msg[0].createdAt,
+      });
+    }
     res.status(200).json({
       message: "Success!",
     });

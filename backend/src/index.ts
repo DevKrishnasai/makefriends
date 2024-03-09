@@ -12,7 +12,7 @@ const api = process.env.API;
 
 const app = express();
 const httpserver = http.createServer(app);
-const io = new Server(httpserver, {
+export const io = new Server(httpserver, {
   cors: {
     origin: "http://localhost:3000", // Replace with your frontend URL
     methods: ["GET", "POST"],
@@ -34,7 +34,7 @@ app.use(
 app.use(`/${api}`, userRoute);
 app.use(`/${api}/messages`, messagesRoute);
 
-const onlineUsers = {};
+export const onlineUsers = {};
 
 io.on("connection", (socket) => {
   const userId: string = socket.handshake.query.userId.toString();

@@ -13,7 +13,7 @@ const ChatBubble = ({
 
   return (
     <div className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}>
-      <div className="chat-image avatar">
+      <div className={`chat-image avatar ${isCurrentUser ? "" : "mb-6"}`}>
         <div className="w-10 rounded-full">
           <img
             alt={`${
@@ -23,14 +23,12 @@ const ChatBubble = ({
           />
         </div>
       </div>
-      <div className="chat-header">
-        {isCurrentUser ? context.user?.username : context.select?.username}
-        <time className="text-xs opacity-50">
-          {new Date(message.createdAt || "").toLocaleTimeString()}
-        </time>
-      </div>
+
       <div className="chat-bubble">{message.message}</div>
-      <div className="chat-footer opacity-50">{message.messageType}</div>
+      {/* <div className="chat-footer opacity-50">{message.messageType}</div> */}
+      {/* <time className="text-xs opacity-50"> */}
+      {new Date(message.createdAt!).toLocaleTimeString()}
+      {/* </time> */}
     </div>
   );
 };

@@ -22,14 +22,19 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     let newSocket: Socket | null = null;
 
     if (context.user) {
-      newSocket = io("http://localhost:4000", {
+      newSocket = io(`${process.env.NEXT_PUBLIC_BASE_URL}`, {
         query: {
           userId: context.user.id,
         },
       });
       setSocket(newSocket);
+
       newSocket.on("onlineUsers", (users) => {
-        console.log("from socket provider", users);
+        setOnlineUsers(users);
+      });
+
+      newSocket.on("new_message", (msg) => {
+        context.setMessages((prev) => [...prev, { ...msg }]);
       });
     } else {
       if (socket) {

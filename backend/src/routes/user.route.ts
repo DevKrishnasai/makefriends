@@ -35,9 +35,50 @@ router.get("/users/:id", async (req, res) => {
         message: "id is required",
       });
     }
-    const usersData = await db.select().from(users).where(ne(users.id, id));
-    return res.status(200).json({ users: usersData, message: "Success!" });
+
+    const user = await db.select().from(users).where(eq(users.id, id));
+    const friendsList: string[] = user[0].friends["friends"];
+    const friends = [];
+    for (let i = 0; i < friendsList.length; i++) {
+      const friend = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, friendsList[i]));
+      friends.push(friend[0]);
+    }
+
+    return res.status(200).json({ users: friends, message: "Success!" });
   } catch (error) {
+    res.status(404).json({ error });
+  }
+});
+
+router.get("/user/request/:id/:friendId", async (req, res) => {
+  const id = req.params.id;
+  const requestId = req.params.friendId.toString();
+  try {
+    if (!id || !requestId) {
+      return res.status(400).json({
+        message: "id is required",
+      });
+    }
+    const usersData = await db.select().from(users).where(eq(users.id, id));
+    if (!usersData.length) {
+      return res.status(400).json({
+        message: "user not found",
+      });
+    }
+    const friends: string[] = usersData[0].friends["friends"];
+    if (friends.includes(requestId)) {
+      return res.status(200).json({
+        message: "already friend",
+      });
+    }
+    friends.push(requestId);
+    await db.update(users).set(usersData[0]).where(eq(users.id, id));
+    return res.status(200).json({ message: "Successfully sent request" });
+  } catch (error) {
+    console.log(error);
     res.status(404).json({ error });
   }
 });
@@ -46,7 +87,6 @@ router.get("/:id/:search", async (req, res) => {
   const search = req.params.search.toLowerCase();
   const id = req.params.id;
   try {
-    console.log(search);
     if (!search) {
       return res.status(400).json({
         message: "search is required",
@@ -60,7 +100,6 @@ router.get("/:id/:search", async (req, res) => {
           users.id
         } <> ${id}`
       );
-    console.log(usersData);
     return res.status(200).json({ users: usersData, message: "Success!" });
   } catch (error) {
     res.status(404).json({ error });

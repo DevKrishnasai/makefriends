@@ -25,6 +25,8 @@ export interface IContext {
   setFriends: React.Dispatch<React.SetStateAction<IUser[]>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  searchFriends: IUser[];
+  setSearchFriends: React.Dispatch<React.SetStateAction<IUser[]>>;
 }
 
 export interface IMessage {

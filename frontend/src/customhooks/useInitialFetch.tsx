@@ -11,15 +11,9 @@ const useInitialFetch = () => {
   const controller = new AbortController();
 
   useEffect(() => {
-    console.log(
-      "In useEffect for checking the user is in db or not (useEffect)"
-    );
     const fetchUser = async () => {
       setLoading(true);
       try {
-        console.log(
-          "Now sending the deatils to backend to check user (backend)"
-        );
         await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/user`,
           {

@@ -25,7 +25,6 @@ const ChatScreen = () => {
   }, [context.messages]);
 
   const sendMessage = async (id: string) => {
-    console.log("i am sending message ");
     try {
       const data = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/messages/post`,
@@ -86,6 +85,10 @@ const ChatScreen = () => {
           >
             {loading ? (
               <Loading />
+            ) : context.messages.length === 0 ? (
+              <div className="flex h-full justify-center items-center">
+                <p>Start messaging 🫵</p>
+              </div>
             ) : (
               context.messages.map((message) => {
                 return (
@@ -120,6 +123,7 @@ const ChatScreen = () => {
                     receiverId: context.select!.id,
                     senderId: context.user!.id,
                     message: context.message.message,
+                    createdAt: new Date(),
                   });
                   context.setMessages((prev) => [
                     ...prev,
@@ -129,6 +133,7 @@ const ChatScreen = () => {
                       receiverId: context.select!.id,
                       senderId: context.user!.id,
                       message: context.message.message,
+                      createdAt: new Date(),
                     },
                   ]);
                   context.setMessage((prev) => ({
@@ -137,14 +142,8 @@ const ChatScreen = () => {
                     receiverId: context.select!.id,
                     senderId: context.user!.id,
                     message: "",
+                    createdAt: new Date(),
                   }));
-                  console.log({
-                    id,
-                    messageType: "text",
-                    receiverId: context.select!.id,
-                    senderId: context.user!.id,
-                    message: context.message.message,
-                  });
                   sendMessage(id);
                 }
               }}

@@ -9,7 +9,6 @@ import { SocketProvider } from "@/providers/SocketProvider";
 import { useContext, useEffect } from "react";
 import { Context } from "@/providers/globalProvider";
 import SearchResultScreen from "@/components/SearchResultScreen";
-import useSocket from "@/customhooks/useSocket";
 
 const page = () => {
   const userLoading = useInitialFetch();
@@ -28,12 +27,15 @@ const page = () => {
         );
         let userData = await data.json();
         console.log(userData);
-        context.setFriends(userData.users);
+        context.setSearchFriends(userData.users);
       } catch (error) {
         console.log(error);
       }
     };
-    if (context.search) {
+    if (!context.search) {
+      context.setSearchFriends([]);
+    }
+    if (context.search.length > 2) {
       fetchUser();
     }
   }, [context.search]);
@@ -53,9 +55,10 @@ const page = () => {
                   placeholder="search..."
                   className="bg-transparent"
                   onChange={(e) => context.setSearch(e.target.value)}
+                  value={context.search}
                 />
               </form>
-              {context.search.length ? <SearchResultScreen /> : <SideBar />}
+              {context.search.length > 0 ? <SearchResultScreen /> : <SideBar />}
             </div>
             <div className="w-full flex flex-col gap-3 ">
               <ChatScreen />
