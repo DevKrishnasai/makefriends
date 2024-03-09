@@ -14,7 +14,7 @@ const app = express();
 const httpserver = http.createServer(app);
 export const io = new Server(httpserver, {
   cors: {
-    origin: "http://localhost:3000", // Replace with your frontend URL
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -42,7 +42,6 @@ io.on("connection", (socket) => {
     onlineUsers[userId] = socket.id;
   }
   console.log(`user with id-${userId} joined`);
-
   io.emit("onlineUsers", Object.keys(onlineUsers));
 
   socket.on("disconnect", () => {

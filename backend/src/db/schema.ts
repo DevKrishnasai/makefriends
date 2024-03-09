@@ -7,6 +7,7 @@ export const users = pgTable("users", {
   email: varchar("email").notNull(),
   bio: text("bio").default("Hey ,I am using MakeFriends"),
   friends: json("friends").default({ friends: [] }),
+  friendRequests: json("friendRequest").default({ friends: [] }),
   createdAt: timestamp("created_at", {
     mode: "string",
     withTimezone: true,

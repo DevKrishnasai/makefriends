@@ -6,6 +6,7 @@ import { GlobalProvider } from "@/providers/globalProvider";
 import { ReactNode } from "react";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
                   {children}
                 </div>
               </div>
+              <Toaster />
             </ThemeProvider>
           </GlobalProvider>
         </body>

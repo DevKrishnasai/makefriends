@@ -92,6 +92,13 @@
       "when": 1709971485914,
       "tag": "0012_easy_chronomancer",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1709982767540,
+      "tag": "0013_strong_nighthawk",
+      "breakpoints": true
     }
   ]
 }
