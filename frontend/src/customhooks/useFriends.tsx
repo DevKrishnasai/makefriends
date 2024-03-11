@@ -25,7 +25,11 @@ export const useFriends = () => {
           }
         );
         const data = await friendsData.json();
-        context.setFriends(data.users);
+        if (typeof data.users === "object") {
+          context.setFriends(data.users);
+        } else {
+          context.setFriends([]);
+        }
       } catch (error) {
         console.log(error);
       } finally {

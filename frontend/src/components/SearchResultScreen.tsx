@@ -56,11 +56,12 @@ const SearchResultScreen = () => {
       onTouchEnd={() => enableScrolling("#sidebar")}
       onTouchCancel={() => enableScrolling("#sidebar")}
     >
-      {context.searchFriends.length === 0 ? (
+      {context.searchFriends && context.searchFriends.length === 0 ? (
         <div className="flex h-full justify-center items-center font-bold">
           Nope, No User Found
         </div>
       ) : (
+        context.searchFriends &&
         context.searchFriends.map((user: IUser) => {
           return (
             <SingleResultRow

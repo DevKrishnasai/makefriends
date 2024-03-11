@@ -14,6 +14,7 @@ const page = () => {
   const userLoading = useInitialFetch();
   const context = useContext(Context);
   const controller = new AbortController();
+
   useEffect(() => {
     console.log("In useEffect for searching a user (useEffect)");
     const fetchUser = async () => {
@@ -39,6 +40,31 @@ const page = () => {
       fetchUser();
     }
   }, [context.search]);
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        let data = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/requests/${context.user?.id}`,
+          {
+            signal: controller.signal,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "GET",
+          }
+        );
+        let userData = await data.json();
+        console.log(userData);
+        context.setNotifications(userData.users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (context.user) {
+      getNotifications();
+    }
+  }, [context.user]);
   return (
     <SocketProvider>
       <div className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">
@@ -48,7 +74,7 @@ const page = () => {
           </div>
         ) : (
           <>
-            <div className="flex flex-col w-1/3 border rounded-md border-black dark:border-white">
+            <div className="flex flex-col w-1/3 border rounded-md border-black dark:border-white relative">
               <form className="p-2 z-0">
                 <Input
                   type="search"

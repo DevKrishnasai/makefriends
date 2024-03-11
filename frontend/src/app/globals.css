@@ -74,31 +74,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-*::-webkit-scrollbar {
-  width: 5px; /* width of the entire scrollbar */
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent; /* color of the tracking area */
-}
-
-*::-webkit-scrollbar-thumb {
-  /* background-color: blue;  color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid white; /* creates padding around scroll thumb */
-}
-
-.apply::-webkit-scrollbar-thumb {
-  /* background-color: blue;  color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid black; /* creates padding around scroll thumb */
-}
-
-.bgImage {
-  background-image: url("/bg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-}

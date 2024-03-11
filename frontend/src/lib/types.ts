@@ -27,6 +27,10 @@ export interface IContext {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   searchFriends: IUser[];
   setSearchFriends: React.Dispatch<React.SetStateAction<IUser[]>>;
+  notifications: IUser[];
+  setNotifications: React.Dispatch<React.SetStateAction<IUser[]>>;
+  onlineUsers: string[];
+  setOnlineUsers: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export interface IMessage {
@@ -43,6 +47,27 @@ export type MessageType = "text" | "image" | "file";
 export interface ISocketContext {
   socket: Socket | null;
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
-  onlineUsers: string[];
-  setOnlineUsers: React.Dispatch<React.SetStateAction<string[]>>;
+  typing: {
+    senderId: string;
+    receiverId: string;
+    message: string;
+  };
+  setTyping: React.Dispatch<
+    React.SetStateAction<{
+      senderId: string;
+      receiverId: string;
+      message: string;
+    }>
+  >;
+}
+
+export interface IAccept {
+  id: string;
+  status: "Accepted" | "Rejected";
+  username: string;
+  email: string;
+  avatar: string;
+  bio?: string;
+  friends?: string;
+  createdAt?: Date;
 }

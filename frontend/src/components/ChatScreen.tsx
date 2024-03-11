@@ -1,7 +1,6 @@
 "use client";
 import { useContext, useEffect, useRef } from "react";
 import { BiDotsVerticalRounded, BiPhone, BiVideo } from "react-icons/bi";
-import { disableScrolling, enableScrolling } from "@/lib/scrollFunctions";
 import { useTheme } from "next-themes";
 import { v4 as uuid } from "uuid";
 import { Context } from "@/providers/globalProvider";
@@ -10,6 +9,8 @@ import ChatBubble from "./ChatBubble";
 import EmptyScreen from "./EmptyScreen";
 import { useChats } from "@/customhooks/useChats";
 import Loading from "./Loading";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SocketContext } from "@/providers/SocketProvider";
 
 const ChatScreen = () => {
   const { theme } = useTheme();
@@ -17,12 +18,30 @@ const ChatScreen = () => {
   const controller = new AbortController();
   const loading = useChats();
   const lastMsg = useRef<HTMLDivElement>(null);
+  const socketContext = useContext(SocketContext);
 
   useEffect(() => {
     setTimeout(() => {
       lastMsg.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
-  }, [context.messages]);
+  }, [context.messages.length, socketContext?.typing.message]);
+
+  useEffect(() => {
+    if (socketContext?.socket) {
+      if (context.select && context.select.id && context.message.message) {
+        if (context.message.message.length > 0) {
+          socketContext?.socket.emit("typing", {
+            senderId: context.user!.id,
+            receiverId: context.select.id,
+            message: context.message.message,
+          });
+        }
+      }
+      socketContext.socket.on("typing", (obj) => {
+        socketContext.setTyping(obj);
+      });
+    }
+  }, [context.message.message, context.select]);
 
   const sendMessage = async (id: string) => {
     try {
@@ -52,7 +71,7 @@ const ChatScreen = () => {
     <>
       {context.select ? (
         <>
-          <div className="p-2 px-3 flex justify-between items-center border-black dark:border-white w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border">
+          <div className="relative p-2 px-3 flex justify-between items-center border-black dark:border-white w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter  border">
             <div className="flex items-center gap-3">
               <div className="avatar">
                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -61,7 +80,11 @@ const ChatScreen = () => {
               </div>
               <div className="flex flex-col ">
                 <p className="font-bold text-lg">{context.select.username}</p>
-                <p className="text-xs font-bold">Online</p>
+                <p className="text-xs font-bold">
+                  {context.onlineUsers.includes(context.select.id)
+                    ? "Online"
+                    : "Offline"}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -71,34 +94,66 @@ const ChatScreen = () => {
             </div>
           </div>
           <div
-            id="chatscreen"
-            className={`h-[calc(100vh-190px)]  px-2 overflow-y-auto scroll-smooth z-0 w-full bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-black dark:border-white
-        ${theme === "light" ? " apply" : " "}`}
-            onScroll={() => disableScrolling("#chatscreen")}
-            onMouseMove={() => enableScrolling("#chatscreen")}
-            // onClick={enableScrolling}
-            onMouseLeave={() => enableScrolling("#chatscreen")}
-            onWheel={() => enableScrolling("#chatscreen")}
-            onTouchMove={() => enableScrolling("#chatscreen")}
-            onTouchEnd={() => enableScrolling("#chatscreen")}
-            onTouchCancel={() => enableScrolling("#chatscreen")}
+            className={`h-[calc(100vh-190px)]  px-2 overflow-y-auto scroll-smooth z-0 w-full bg-white-0 rounded-md bg-clip-padding border border-black dark:border-white`}
           >
             {loading ? (
-              <Loading />
-            ) : context.messages.length === 0 ? (
-              <div className="flex h-full justify-center items-center">
-                <p>Start messaging 🫵</p>
+              <div className="h-full w-full flex justify-center items-center">
+                <Loading />
               </div>
-            ) : (
-              context.messages.map((message) => {
-                return (
-                  <div key={message.id} ref={lastMsg}>
-                    <ChatBubble message={message} context={context} />
+            ) : context.messages.length === 0 ? (
+              socketContext?.typing && socketContext.typing.message ? (
+                context.onlineUsers.includes(context.select.id) &&
+                socketContext &&
+                socketContext.typing.message.length > 1 && (
+                  <div ref={lastMsg} className="">
+                    <ChatBubble
+                      message={{
+                        ...socketContext!.typing,
+                        id: "typing",
+                        createdAt: new Date(),
+                        messageType: "text",
+                      }}
+                      typing={true}
+                      context={context}
+                    />
                   </div>
-                );
-              })
+                )
+              ) : (
+                <div className="flex h-full justify-center items-center">
+                  <p>Start messaging 🫵</p>
+                </div>
+              )
+            ) : (
+              <ScrollArea className="h-full w-full">
+                {context.messages.map((message) => {
+                  return (
+                    <div key={message.id} ref={lastMsg}>
+                      <ChatBubble message={message} context={context} />
+                    </div>
+                  );
+                })}
+                {/* <div className="absolute bottom-0 left-0 w-full h-full"> */}
+                {context.onlineUsers.includes(context.select.id) &&
+                  socketContext &&
+                  socketContext.typing.message.length > 1 && (
+                    <div ref={lastMsg} className="">
+                      <ChatBubble
+                        message={{
+                          ...socketContext!.typing,
+                          id: "typing",
+                          createdAt: new Date(),
+                          messageType: "text",
+                        }}
+                        typing={true}
+                        context={context}
+                      />
+                    </div>
+                  )}
+                {/* </div> */}
+              </ScrollArea>
             )}
           </div>
+
           <div className="w-full flex justify-between items-center border-1 bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-black dark:border-white">
             <Input
               placeholder="type a message..."
@@ -152,7 +207,7 @@ const ChatScreen = () => {
           </div>
         </>
       ) : (
-        <div className=" h-full w-full flex justify-center items-center border-black dark:border-white bg-white-0 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border">
+        <div className=" h-full w-full flex justify-center items-center border-black dark:border-white bg-white-0 rounded-md bg-clip-padding  border">
           <EmptyScreen />
         </div>
       )}

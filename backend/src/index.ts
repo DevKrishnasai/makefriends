@@ -44,6 +44,12 @@ io.on("connection", (socket) => {
   console.log(`user with id-${userId} joined`);
   io.emit("onlineUsers", Object.keys(onlineUsers));
 
+  socket.on("typing", (obj) => {
+    if (Object.keys(onlineUsers).includes(obj.receiverId)) {
+      io.to(onlineUsers[obj.receiverId]).emit("typing", obj);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(`user with id-${userId} disconnected`);
     delete onlineUsers[userId];

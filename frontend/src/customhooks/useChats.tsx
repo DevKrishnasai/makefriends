@@ -42,6 +42,6 @@ export const useChats = () => {
       controller.abort();
       setLoading(false);
     };
-  }, [context.select, context.user, socketContext?.socket]);
+  }, [context.select, context.user]);
   return loading;
 };

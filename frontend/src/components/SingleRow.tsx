@@ -1,7 +1,7 @@
 "use client";
 import { IUser } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { SocketContext } from "@/providers/SocketProvider";
+import { Context } from "@/providers/globalProvider";
 import { useTheme } from "next-themes";
 import React, { useContext } from "react";
 const SingleRow = ({
@@ -14,7 +14,7 @@ const SingleRow = ({
   onSelect: React.Dispatch<React.SetStateAction<IUser | null>>;
 }) => {
   const { theme } = useTheme();
-  const context = useContext(SocketContext);
+  const context = useContext(Context);
   const isOnline = context?.onlineUsers.some((id) => id === user.id);
 
   return (

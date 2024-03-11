@@ -3,6 +3,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { cn } from "@/lib/utils";
 
 export function ToggleButton() {
   const { setTheme, theme } = useTheme();
@@ -12,15 +13,38 @@ export function ToggleButton() {
     //   {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
     // </Button>
 
-    theme === "dark" ? (
-      <Button onClick={() => setTheme("light")} className="z-0 rounded-full">
-        <MdLightMode />
-      </Button>
-    ) : (
-      <Button onClick={() => setTheme("dark")} className="z-0 rounded-full">
-        <MdDarkMode />
-      </Button>
-    )
+    <div
+      className={cn(
+        "relative hover:rounded-full flex justify-center items-center p-1",
+        theme === "dark"
+          ? "hover:bg-white hover:text-black"
+          : "hover:bg-black hover:text-white"
+      )}
+    >
+      {theme === "dark" ? (
+        <MdLightMode
+          size={24}
+          onClick={() => setTheme("light")}
+          className={cn(
+            " rounded-full z-1",
+            theme === "dark"
+              ? "hover:bg-white hover:text-black"
+              : "hover:bg-black hover:text-white"
+          )}
+        />
+      ) : (
+        <MdDarkMode
+          size={24}
+          onClick={() => setTheme("dark")}
+          className={cn(
+            "z-1 rounded-full",
+            theme === "dark"
+              ? "hover:bg-white hover:text-black"
+              : "hover:bg-black hover:text-white"
+          )}
+        />
+      )}
+    </div>
 
     // <DropdownMenu>
     //   <DropdownMenuTrigger asChild className="dark:bg-[#0000002e]">

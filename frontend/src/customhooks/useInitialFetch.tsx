@@ -40,13 +40,12 @@ const useInitialFetch = () => {
     };
     if (currentUser) {
       fetchUser();
-
       context.setUser({
-        id: currentUser!.id,
-        username: currentUser!.fullName! || currentUser!.firstName!,
-        email: currentUser!.emailAddresses[0].emailAddress,
-        avatar: currentUser!.hasImage
-          ? currentUser!.imageUrl
+        id: currentUser.id,
+        username: currentUser.fullName || currentUser.firstName!,
+        email: currentUser.emailAddresses[0].emailAddress,
+        avatar: currentUser.hasImage
+          ? currentUser.imageUrl
           : `https://robohash.org/${currentUser?.firstName}`,
       });
     }

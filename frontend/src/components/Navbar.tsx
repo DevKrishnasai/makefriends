@@ -17,18 +17,24 @@ import { ToggleButton } from "./ToggleButtun";
 import { Button } from "./ui/button";
 import Loading from "./Loading";
 import { useRouter } from "next/navigation";
+import Notifications from "./Notifications";
+import { useState } from "react";
 
 const Navbar = () => {
   const { theme } = useTheme();
   const { userId } = useAuth();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   // if (!userId) return redirect("/");
 
   return (
     <div className="w-full py-4">
       <div className="flex flex-row items-center gap-3">
         {/* <BiLogoAmazon size={40} /> */}
-        <Link href="/" className="ml-3 font-bold text-3xl cursor-pointer z-10">
+        <Link
+          href="/"
+          className="ml-3 font-bold text-3xl cursor-pointer z-10 animate-pulse"
+        >
           MakeFriends
         </Link>
         <div className="flex-1 flex items-center justify-end gap-3 z-0">
@@ -40,7 +46,8 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-          {userId && (
+          {userId && <Notifications open={open} setOpen={setOpen} />}
+          {/* {userId && (
             <>
               <ClerkLoading>
                 <Button>
@@ -53,7 +60,7 @@ const Navbar = () => {
                 </Button>
               </ClerkLoaded>
             </>
-          )}
+          )} */}
 
           {userId && (
             <>
@@ -67,6 +74,7 @@ const Navbar = () => {
               <ClerkLoaded>
                 <UserButton
                   appearance={theme === "dark" ? { baseTheme: dark } : {}}
+                  afterSignOutUrl="/"
                 />
               </ClerkLoaded>
             </>
