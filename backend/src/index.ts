@@ -9,9 +9,8 @@ dotenv.config();
 
 const port = process.env.PORT || 5000;
 const api = process.env.API;
-
-export const app = express();
-export const httpserver = http.createServer(app);
+const app = express();
+const httpserver = http.createServer(app);
 export const io = new Server(httpserver, {
   cors: {
     origin: process.env.FRONTEND_URL,
@@ -29,6 +28,10 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
+app.get("/", (req, res) => {
+  res.json({ message: "serrver working" });
+});
 
 // Routes
 app.use(`/${api}`, userRoute);
