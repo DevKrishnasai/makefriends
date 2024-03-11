@@ -10,11 +10,11 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 const api = process.env.API;
 
-const app = express();
-const httpserver = http.createServer(app);
+export const app = express();
+export const httpserver = http.createServer(app);
 export const io = new Server(httpserver, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -25,7 +25,7 @@ export const io = new Server(httpserver, {
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
