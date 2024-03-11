@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/index.js",
-    "build": "tsc && node dist/index.js",
+    "build": "tsc",
     "generate": "drizzle-kit generate:pg",
     "migrate": "drizzle-kit push:pg",
     "seed": "drizzle-kit seed:pg",
