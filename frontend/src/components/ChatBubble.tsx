@@ -34,7 +34,7 @@ const ChatBubble = ({
 
         <div
           className={cn(
-            "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white flex"
+            "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white flex break-words"
           )}
         >
           {message.message}
@@ -59,10 +59,7 @@ const ChatBubble = ({
 
       <div
         className={cn(
-          "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white",
-          isCurrentUser
-          // ? "bg-white text-black dark:bg-black dark:text-white "
-          // : "bg-black text-white dark:bg-white dark:text-black border-2"
+          "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white break-words"
         )}
       >
         {message.message}

@@ -22,22 +22,22 @@ export function ToggleButton() {
       )}
     >
       {theme === "dark" ? (
-        <MdLightMode
+        <MdDarkMode
           size={24}
           onClick={() => setTheme("light")}
           className={cn(
-            " rounded-full z-1",
+            " rounded-full z-1 cursor-pointer",
             theme === "dark"
               ? "hover:bg-white hover:text-black"
               : "hover:bg-black hover:text-white"
           )}
         />
       ) : (
-        <MdDarkMode
+        <MdLightMode
           size={24}
           onClick={() => setTheme("dark")}
           className={cn(
-            "z-1 rounded-full",
+            "z-1 rounded-full  cursor-pointer",
             theme === "dark"
               ? "hover:bg-white hover:text-black"
               : "hover:bg-black hover:text-white"

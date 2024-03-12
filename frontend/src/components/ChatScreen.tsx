@@ -132,7 +132,6 @@ const ChatScreen = () => {
                     </div>
                   );
                 })}
-                {/* <div className="absolute bottom-0 left-0 w-full h-full"> */}
                 {context.onlineUsers.includes(context.select.id) &&
                   socketContext &&
                   socketContext.typing.message.length > 1 && (
@@ -149,7 +148,6 @@ const ChatScreen = () => {
                       />
                     </div>
                   )}
-                {/* </div> */}
               </ScrollArea>
             )}
           </div>

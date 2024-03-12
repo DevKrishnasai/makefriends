@@ -16,17 +16,15 @@ import Link from "next/link";
 import { ToggleButton } from "./ToggleButtun";
 import { Button } from "./ui/button";
 import Loading from "./Loading";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Notifications from "./Notifications";
 import { useState } from "react";
 
 const Navbar = () => {
   const { theme } = useTheme();
   const { userId } = useAuth();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
-  // if (!userId) return redirect("/");
-
+  const pathname = usePathname();
   return (
     <div className="w-full py-4">
       <div className="flex flex-row items-center gap-3">
@@ -46,7 +44,9 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-          {userId && <Notifications open={open} setOpen={setOpen} />}
+          {pathname === "/chat" && userId && (
+            <Notifications open={open} setOpen={setOpen} />
+          )}
           {/* {userId && (
             <>
               <ClerkLoading>

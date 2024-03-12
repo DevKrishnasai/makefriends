@@ -1,5 +1,4 @@
 "use client";
-
 import ChatScreen from "@/components/ChatScreen";
 import SideBar from "@/components/SideBar";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,19 @@ const page = () => {
   const userLoading = useInitialFetch();
   const context = useContext(Context);
   const controller = new AbortController();
+
+  useEffect(() => {
+    const notificatioService = () => {
+      if ("Notification" in window) {
+        if (Notification.permission === "denied") {
+          Notification.requestPermission();
+        } else if (Notification.permission === "default") {
+          Notification.requestPermission();
+        }
+      }
+    };
+    notificatioService();
+  }, []);
 
   useEffect(() => {
     console.log("In useEffect for searching a user (useEffect)");
