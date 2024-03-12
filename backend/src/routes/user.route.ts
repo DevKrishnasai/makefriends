@@ -1,7 +1,7 @@
 import express from "express";
 import { db } from "../db/db-connection";
-import { users } from "../db/schema";
-import { eq, sql } from "drizzle-orm";
+import { messages, users } from "../db/schema";
+import { asc, desc, eq, or, sql } from "drizzle-orm";
 import { io, onlineUsers } from "../index";
 
 const router = express.Router();
@@ -33,7 +33,8 @@ router.put("/request-accept-or-reject", async (req, res) => {
       });
     }
 
-    let friendRequestsList: string[] = user[0].friendRequests["friends"];
+    let friendRequestsList: string[] =
+      user[0].friendRequestsRecieved["friends"];
 
     friendRequestsList = friendRequestsList.filter(
       (requests) => requests !== acceptId
@@ -46,7 +47,7 @@ router.put("/request-accept-or-reject", async (req, res) => {
     await db
       .update(users)
       .set({
-        friendRequests: {
+        friendRequestsRecieved: {
           friends: friendRequestsList,
         },
         friends: {
@@ -93,7 +94,8 @@ router.get("/requests/:id", async (req, res) => {
       });
     }
     const user = await db.select().from(users).where(eq(users.id, id));
-    const friendRequestsList: string[] = user[0].friendRequests["friends"];
+    const friendRequestsList: string[] =
+      user[0].friendRequestsRecieved["friends"];
     const friendRequests = [];
     for (let i = 0; i < friendRequestsList.length; i++) {
       const friendRequest = await db
@@ -142,19 +144,66 @@ router.get("/users/:id", async (req, res) => {
       });
     }
 
+    console.log("we r in get side bar");
+
     const user = await db.select().from(users).where(eq(users.id, id));
     const friendsList: string[] = user[0].friends["friends"];
-    const friends = [];
+    let friendsWithLastChat = [];
     for (let i = 0; i < friendsList.length; i++) {
+      let chats = await db
+        .select()
+        .from(messages)
+        .where(
+          or(
+            eq(messages.messageFromAndBy, id + "-" + friendsList[i]),
+            eq(messages.messageFromAndBy, friendsList[i] + "-" + id)
+          )
+        )
+        .orderBy(desc(messages.createdAt));
+      console.log(chats[0]);
       const friend = await db
         .select()
         .from(users)
         .where(eq(users.id, friendsList[i]));
-      friends.push(friend[0]);
-    }
-    console.log("friendsList", friendsList);
+      let row: any;
+      if (!chats.length) {
+        row = {
+          id: friend[0].id,
+          avatar: friend[0].avatar,
+          username: friend[0].username,
+          email: friend[0].email,
+          bio: friend[0].bio,
+          friends: friend[0].friends,
+          createdAt: friend[0].createdAt,
+          message: "",
+          messageFrom: "",
+          messageType: "",
+        };
+      } else {
+        row = {
+          id: friend[0].id,
+          avatar: friend[0].avatar,
+          username: friend[0].username,
+          email: friend[0].email,
+          bio: friend[0].bio,
+          friends: friend[0].friends,
+          createdAt: friend[0].createdAt,
+          message: chats[0].message,
+          messageFrom: chats[0].messageFromAndBy.split("-")[0],
+          messageType: chats[0].messageType,
+          lastTime: chats[0].createdAt,
+        };
+      }
 
-    return res.status(200).json({ users: friends, message: "Success!" });
+      friendsWithLastChat.push(row);
+
+      console.log(friend[0]);
+    }
+    console.log("friendsWithLastChat", friendsWithLastChat);
+
+    return res
+      .status(200)
+      .json({ users: friendsWithLastChat, message: "Success!" });
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -170,21 +219,18 @@ router.get("/user/request/:id/:friendId", async (req, res) => {
         message: "id is required",
       });
     }
-    // const usersData = await db.select().from(users).where(eq(users.id, id));
-    // if (!usersData.length) {
-    //   return res.status(400).json({
-    //     message: "user not found",
-    //   });
-    // }
-    // const friends: string[] = usersData[0].friends["friends"];
-    // if (friends.includes(requestId)) {
-    //   return res.status(200).json({
-    //     message: "already friend",
-    //   });
-    // }
-
-    // friends.push(requestId);
-    // await db.update(users).set(usersData[0]).where(eq(users.id, id));
+    const user = await db.select().from(users).where(eq(users.id, id));
+    if (!user.length) {
+      return res.status(400).json({
+        message: "user not found",
+      });
+    }
+    const friend = user[0].friendRequestsRecieved["friends"];
+    if (friend.includes(requestId)) {
+      return res.status(400).json({
+        message: "already requested for friend check notifications",
+      });
+    }
 
     const oppositeUser = await db
       .select()
@@ -195,7 +241,7 @@ router.get("/user/request/:id/:friendId", async (req, res) => {
         message: "user not found",
       });
     }
-    const friends: string[] = oppositeUser[0].friendRequests["friends"];
+    const friends: string[] = oppositeUser[0].friendRequestsRecieved["friends"];
     if (friends.includes(id)) {
       return res.status(200).json({
         message: "already sent friend request",
@@ -253,4 +299,5 @@ router.get("/:id/:search", async (req, res) => {
     res.status(404).json({ error });
   }
 });
+
 export default router;

@@ -1,5 +1,5 @@
 "use client";
-import { IContext, IMessage, IUser, MessageType } from "@/lib/types";
+import { IContext, IFriends, IMessage, IUser, MessageType } from "@/lib/types";
 import React, { ReactNode, createContext, useState } from "react";
 
 export const Context = createContext<IContext>({
@@ -42,7 +42,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     senderId: "",
   });
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [friends, setFriends] = useState<IUser[]>([]);
+  const [friends, setFriends] = useState<IFriends[]>([]);
   const [typeOfMessage, setTypeOfMessage] = useState<MessageType>("text");
   const [search, setSearch] = useState<string>("");
   const [searchFriends, setSearchFriends] = useState<IUser[]>([]);

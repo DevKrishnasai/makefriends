@@ -34,7 +34,7 @@ const ChatBubble = ({
 
         <div
           className={cn(
-            "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white flex break-words"
+            "chat-bubble bg-black dark:border-2 dark:border-green-50 text-white dark:text-white flex break-all"
           )}
         >
           {message.message}

@@ -8,7 +8,9 @@ const SingleRow = ({
   user,
   select,
   onSelect,
+  lastMsg,
 }: {
+  lastMsg: string;
   user: IUser;
   select: IUser | null;
   onSelect: React.Dispatch<React.SetStateAction<IUser | null>>;
@@ -44,7 +46,7 @@ const SingleRow = ({
       </div>
       <div className="font-bold w-full ml-2 ">
         <p className="text-lg">{user.username}</p>
-        <p className="text-[10px]">hi man!!</p>
+        <p className="text-[10px]">{lastMsg}</p>
       </div>
     </div>
   );

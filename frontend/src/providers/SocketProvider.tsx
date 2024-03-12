@@ -61,7 +61,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             color: theme === "dark" ? "#fff" : "#000",
           },
         });
-        context.setNotifications((prev) => [...(prev || {}), { ...user[0] }]);
+        if (context.notifications.length === 0) {
+          context.setNotifications([{ ...user[0] }]);
+        } else {
+          context.setNotifications((prev) => [...(prev || {}), { ...user[0] }]);
+        }
       });
 
       newSocket.on("accepted", (friend) => {

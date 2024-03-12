@@ -21,8 +21,8 @@ export interface IContext {
   setTypeOfMessage: React.Dispatch<React.SetStateAction<MessageType>>;
   messages: IMessage[];
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
-  friends: IUser[];
-  setFriends: React.Dispatch<React.SetStateAction<IUser[]>>;
+  friends: IFriends[];
+  setFriends: React.Dispatch<React.SetStateAction<IFriends[]>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   searchFriends: IUser[];
@@ -70,4 +70,10 @@ export interface IAccept {
   bio?: string;
   friends?: string;
   createdAt?: Date;
+}
+
+export interface IFriends extends IUser {
+  message: string;
+  messageType: MessageType | "";
+  lastTime: Date;
 }

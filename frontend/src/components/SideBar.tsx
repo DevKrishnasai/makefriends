@@ -1,9 +1,9 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useFriends } from "@/customhooks/useFriends";
-import { IUser } from "@/lib/types";
+import { IFriends, IUser } from "@/lib/types";
 import { Context } from "@/providers/globalProvider";
 import { disableScrolling, enableScrolling } from "@/lib/scrollFunctions";
 import SingleRow from "./SingleRow";
@@ -35,13 +35,14 @@ const SideBar = () => {
           No Friends
         </div>
       ) : (
-        context.friends.map((friend: IUser) => {
+        context.friends.map((friend: IFriends) => {
           return (
             <SingleRow
               key={friend.id}
               user={friend}
               select={context.select}
               onSelect={context.setSelect}
+              lastMsg={friend.message}
             />
           );
         })

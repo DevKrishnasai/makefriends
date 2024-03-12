@@ -1,7 +1,5 @@
 "use client";
 import { useTheme } from "next-themes";
-
-import { Button } from "@/components/ui/button";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +20,7 @@ export function ToggleButton() {
       )}
     >
       {theme === "dark" ? (
-        <MdDarkMode
+        <MdLightMode
           size={24}
           onClick={() => setTheme("light")}
           className={cn(
@@ -33,7 +31,7 @@ export function ToggleButton() {
           )}
         />
       ) : (
-        <MdLightMode
+        <MdDarkMode
           size={24}
           onClick={() => setTheme("dark")}
           className={cn(

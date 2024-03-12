@@ -15,8 +15,8 @@ router.post("/get", async (req, res) => {
       .from(messages)
       .where(
         or(
-          eq(messages.messageFromAndBy, senderId + "_" + receiverId),
-          eq(messages.messageFromAndBy, receiverId + "_" + senderId)
+          eq(messages.messageFromAndBy, senderId + "-" + receiverId),
+          eq(messages.messageFromAndBy, receiverId + "-" + senderId)
         )
       )
       .orderBy(asc(messages.createdAt));
@@ -41,7 +41,7 @@ router.post("/post", async (req, res) => {
         receiverId,
         message,
         messageType,
-        messageFromAndBy: senderId + "_" + receiverId,
+        messageFromAndBy: senderId + "-" + receiverId,
       })
       .returning();
     if (onlineUsers[receiverId]) {
