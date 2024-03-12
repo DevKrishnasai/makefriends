@@ -73,9 +73,9 @@ const Notifications = ({
         console.log(error);
       }
     };
-    // if (accept.id) {
-    acceptTheUserRequest();
-    // }
+    if (accept.id) {
+      acceptTheUserRequest();
+    }
   }, [accept.id]);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -89,7 +89,9 @@ const Notifications = ({
           )}
         >
           <IoNotifications size={24} className="" />
-          {context.notifications && context.notifications.length > 0 ? (
+          {context &&
+          context.notifications &&
+          context.notifications.length > 0 ? (
             <span
               className={cn(
                 "absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2  rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold bg-transparent text-black border-1 border-black",
@@ -109,7 +111,8 @@ const Notifications = ({
         <SheetHeader>
           <SheetTitle>Notifications and friend requests</SheetTitle>
           <SheetDescription>
-            {context.notifications &&
+            {context &&
+              context.notifications &&
               context.notifications.map((notification) => {
                 return (
                   <div
