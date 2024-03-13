@@ -47,18 +47,10 @@ export type MessageType = "text" | "image" | "file";
 export interface ISocketContext {
   socket: Socket | null;
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
-  typing: {
-    senderId: string;
-    receiverId: string;
-    message: string;
-  };
-  setTyping: React.Dispatch<
-    React.SetStateAction<{
-      senderId: string;
-      receiverId: string;
-      message: string;
-    }>
-  >;
+  typing: typing;
+  setTyping: React.Dispatch<React.SetStateAction<typing>>;
+  messages: friendsTyping[];
+  setMessages: React.Dispatch<React.SetStateAction<friendsTyping[]>>;
 }
 
 export interface IAccept {
@@ -75,5 +67,20 @@ export interface IAccept {
 export interface IFriends extends IUser {
   message: string;
   messageType: MessageType | "";
+  messageFrom: string;
   lastTime: Date;
+}
+
+export interface friendsTyping {
+  senderId: string;
+  receiverId: string;
+  message: string;
+  createdAt: Date;
+  messageType: MessageType | "";
+}
+
+export interface typing {
+  senderId: string;
+  receiverId: string;
+  message: string;
 }

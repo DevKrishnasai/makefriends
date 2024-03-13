@@ -1,5 +1,4 @@
 "use client";
-import { IUser } from "@/lib/types";
 import { Context } from "@/providers/globalProvider";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
@@ -10,6 +9,7 @@ const useInitialFetch = () => {
   const context = useContext(Context);
   const controller = new AbortController();
 
+  //it checks the user is present in db or not, if not it creates the user
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
@@ -33,7 +33,7 @@ const useInitialFetch = () => {
           }
         );
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching initial user data:", error);
       } finally {
         setLoading(false);
       }

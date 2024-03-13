@@ -8,12 +8,16 @@ import { SocketProvider } from "@/providers/SocketProvider";
 import { useContext, useEffect } from "react";
 import { Context } from "@/providers/globalProvider";
 import SearchResultScreen from "@/components/SearchResultScreen";
+import useUserActive from "@/customhooks/useUserActive";
 
 const page = () => {
   const userLoading = useInitialFetch();
   const context = useContext(Context);
   const controller = new AbortController();
+  // const loading = useUserActive();
+  // console.log(loading);
 
+  //asking for notification permission for desktop notifications
   useEffect(() => {
     const notificatioService = () => {
       if ("Notification" in window) {
@@ -27,19 +31,21 @@ const page = () => {
     notificatioService();
   }, []);
 
+  //searching users search bar
   useEffect(() => {
-    console.log("In useEffect for searching a user (useEffect)");
     const fetchUser = async () => {
-      console.log("Now fetching users  for searching a user (backend)");
       try {
         let data = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API}/${context.user?.id}/${context.search}`,
           {
             signal: controller.signal,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "GET",
           }
         );
         let userData = await data.json();
-        console.log(userData);
         context.setSearchFriends(userData.users);
       } catch (error) {
         console.log(error);
@@ -48,11 +54,16 @@ const page = () => {
     if (!context.search) {
       context.setSearchFriends([]);
     }
+    let searchTimeout: string | number | NodeJS.Timeout | undefined;
     if (context.search.length > 2) {
-      fetchUser();
+      searchTimeout = setTimeout(() => {
+        fetchUser();
+      }, 1500);
     }
+    return () => clearTimeout(searchTimeout);
   }, [context.search]);
 
+  // get notifications initially from db
   useEffect(() => {
     const getNotifications = async () => {
       try {
@@ -67,7 +78,6 @@ const page = () => {
           }
         );
         let userData = await data.json();
-        console.log(userData);
         context.setNotifications(userData.users);
       } catch (error) {
         console.log(error);
@@ -77,6 +87,7 @@ const page = () => {
       getNotifications();
     }
   }, [context.user]);
+
   return (
     <SocketProvider>
       <div className="flex h-[calc(100vh-72px)] w-full gap-3 p-2">

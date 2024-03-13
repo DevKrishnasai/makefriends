@@ -15,6 +15,8 @@ const SearchResultScreen = () => {
   const loading = useFriends();
   const context = useContext(Context);
   const [reqUser, setReqUser] = useState("");
+
+  //send friend request to user
   useEffect(() => {
     const sendRequest = async () => {
       try {
@@ -44,17 +46,8 @@ const SearchResultScreen = () => {
     <div
       id="sidebar"
       className={cn(
-        "mx-2 flex h-full flex-col z-0 overflow-y-auto scroll-smooth divide-slate-950  dark:divide-sky-200",
-        theme === "light" ? "apply" : " "
+        "mx-2 flex h-full flex-col z-0 overflow-y-auto scroll-smooth divide-slate-950  dark:divide-sky-200"
       )}
-      onScroll={() => disableScrolling("#sidebar")}
-      onMouseMove={() => enableScrolling("#sidebar")}
-      // onClick={enableScrolling}
-      onMouseLeave={() => enableScrolling("#sidebar")}
-      onWheel={() => enableScrolling("#sidebar")}
-      onTouchMove={() => enableScrolling("#sidebar")}
-      onTouchEnd={() => enableScrolling("#sidebar")}
-      onTouchCancel={() => enableScrolling("#sidebar")}
     >
       {context.searchFriends && context.searchFriends.length === 0 ? (
         <div className="flex h-full justify-center items-center font-bold">

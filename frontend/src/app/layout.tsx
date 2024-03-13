@@ -5,9 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { GlobalProvider } from "@/providers/globalProvider";
 import { ReactNode } from "react";
 import Navbar from "@/components/Navbar";
-import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

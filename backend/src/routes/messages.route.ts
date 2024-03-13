@@ -1,14 +1,13 @@
 import express from "express";
 import { db } from "../db/db-connection";
-import { messages, users } from "../db/schema";
-import { asc, eq, ne, or } from "drizzle-orm";
+import { messages } from "../db/schema";
+import { asc, eq, or } from "drizzle-orm";
 import { io, onlineUsers } from "../index";
 
 const router = express.Router();
 
 router.post("/get", async (req, res) => {
   const { senderId, receiverId } = req.body;
-  //   console.log(senderId, receiverId);
   try {
     let chats = await db
       .select()
@@ -20,16 +19,16 @@ router.post("/get", async (req, res) => {
         )
       )
       .orderBy(asc(messages.createdAt));
-    console.log(chats.length);
     res.status(200).json({
       chats,
-      message: "Success!",
+      message: "success",
     });
   } catch (error) {
     res.status(404).json({ error });
   }
 });
 
+//save messages from user
 router.post("/post", async (req, res) => {
   const { id, senderId, receiverId, message, messageType } = req.body;
   try {
@@ -45,8 +44,6 @@ router.post("/post", async (req, res) => {
       })
       .returning();
     if (onlineUsers[receiverId]) {
-      console.log("sent to online user");
-
       io.to(onlineUsers[receiverId]).emit("new_message", {
         id: msg[0].id,
         message: msg[0].message,

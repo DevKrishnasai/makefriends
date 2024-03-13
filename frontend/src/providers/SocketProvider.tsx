@@ -1,5 +1,11 @@
 "use client";
-import { ISocketContext, IUser } from "@/lib/types";
+import {
+  ISocketContext,
+  IUser,
+  MessageType,
+  friendsTyping,
+  typing,
+} from "@/lib/types";
 import {
   ReactNode,
   createContext,
@@ -16,15 +22,12 @@ export const SocketContext = createContext<ISocketContext | null>(null);
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [typing, setTyping] = useState<{
-    senderId: string;
-    receiverId: string;
-    message: string;
-  }>({
+  const [typing, setTyping] = useState<typing>({
     senderId: "",
     receiverId: "",
     message: "",
   });
+  const [messages, setMessages] = useState<friendsTyping[]>([]);
   const { theme } = useTheme();
 
   const context = useContext(Context);
@@ -46,12 +49,46 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       });
 
       newSocket.on("new_message", (msg) => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: msg.id,
+            message: msg.message,
+            messageType: msg.messageType,
+            senderId: msg.senderId,
+            receiverId: msg.receiverId,
+            messageFromAndBy: msg.messageFromAndBy,
+            createdAt: msg.createdAt,
+          },
+        ]);
         setTyping({
           senderId: msg.senderId,
           receiverId: msg.receiverId,
           message: "",
         });
         context.setMessages((prev) => [...prev, { ...msg }]);
+        // const userIndex = context.friends.findIndex(
+        //   (friend) => friend.id === msg.senderId
+        // );
+        // console.log(userIndex);
+        // const prevFriends = context.friends.filter(
+        //   (friend) => friend.id !== msg.senderId
+        // );
+        // console.log("me in socket");
+
+        // // if (userIndex !== -1) {
+        // const user = {
+        //   ...context.friends[userIndex],
+        //   message: msg.message,
+        //   messageType: msg.messageType,
+        //   messageFrom: msg.senderId,
+        // };
+        // console.log("prevFriends", prevFriends);
+
+        // // context.setFriends([...prevFriends, user]);
+        // // context.setSelect(user);
+        // console.log(context.friends);
+        // // }
       });
 
       newSocket.on("friendRequest", (user: IUser[]) => {
@@ -112,6 +149,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         setSocket,
         typing,
         setTyping,
+        messages,
+        setMessages,
       }}
     >
       {children}

@@ -1,7 +1,6 @@
 "use client";
 import { useContext, useEffect, useRef } from "react";
 import { BiDotsVerticalRounded, BiPhone, BiVideo } from "react-icons/bi";
-import { useTheme } from "next-themes";
 import { v4 as uuid } from "uuid";
 import { Context } from "@/providers/globalProvider";
 import { Input } from "./ui/input";
@@ -13,19 +12,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SocketContext } from "@/providers/SocketProvider";
 
 const ChatScreen = () => {
-  const { theme } = useTheme();
   const context = useContext(Context);
   const controller = new AbortController();
   const loading = useChats();
   const lastMsg = useRef<HTMLDivElement>(null);
   const socketContext = useContext(SocketContext);
 
+  //scroll messages on adding
   useEffect(() => {
     setTimeout(() => {
-      lastMsg.current?.scrollIntoView({ behavior: "smooth" });
+      lastMsg.current?.scrollIntoView({ behavior: "instant" });
     }, 100);
   }, [context.messages.length, socketContext?.typing.message]);
 
+  //sending and recieving realtime messages from online users
   useEffect(() => {
     if (socketContext?.socket) {
       if (context.select && context.select.id && context.message.message) {
@@ -34,15 +34,18 @@ const ChatScreen = () => {
             senderId: context.user!.id,
             receiverId: context.select.id,
             message: context.message.message,
+            messageType: context.message.messageType,
           });
         }
       }
       socketContext.socket.on("typing", (obj) => {
         socketContext.setTyping(obj);
+        // const typingFriends = context.friends.map((friend)=> friend.id === obj.)
       });
     }
   }, [context.message.message, context.select]);
 
+  //saving messages to db (it just send every message sent to specific friend to save in db)
   const sendMessage = async (id: string) => {
     try {
       const data = await fetch(
@@ -62,6 +65,21 @@ const ChatScreen = () => {
           }),
         }
       );
+      const userIndex = context.friends.findIndex(
+        (friend) => friend.id === context.select?.id
+      );
+      const prevFriends = context.friends.filter(
+        (friend) => friend.id !== context.select?.id
+      );
+      if (userIndex !== -1) {
+        const user = {
+          ...context.friends[userIndex],
+          message: context.message.message || "",
+          messageType: context.message.messageType,
+          messageFrom: context.message.senderId,
+        };
+        context.setFriends([user, ...prevFriends]);
+      }
     } catch (error) {
       console.log(error);
     }

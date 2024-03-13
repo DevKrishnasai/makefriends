@@ -102,9 +102,10 @@ router.get("/requests/:id", async (req, res) => {
         .select()
         .from(users)
         .where(eq(users.id, friendRequestsList[i]));
-      friendRequests.push(friendRequest[0]);
+      if (friendRequest.length) {
+        friendRequests.push(friendRequest[0]);
+      }
     }
-    console.log("friendRequests: " + friendRequests);
     return res.status(200).json({ users: friendRequests, message: "Success!" });
   } catch (error) {
     res.status(404).json({ error });
@@ -123,10 +124,10 @@ router.post("/user", async (req, res) => {
         email: req.body.email,
         username: req.body.username,
       });
-      return res.status(200).json({ user, message: "Success!" });
+      return res.status(200).json({ user, message: "Success", status: 200 });
     }
 
-    return res.status(200).json({ user, message: "Success!" });
+    return res.status(200).json({ user, message: "Success", status: 200 });
   } catch (error) {
     res.status(404).json({
       error: error.message,
@@ -144,8 +145,6 @@ router.get("/users/:id", async (req, res) => {
       });
     }
 
-    console.log("we r in get side bar");
-
     const user = await db.select().from(users).where(eq(users.id, id));
     const friendsList: string[] = user[0].friends["friends"];
     let friendsWithLastChat = [];
@@ -160,7 +159,6 @@ router.get("/users/:id", async (req, res) => {
           )
         )
         .orderBy(desc(messages.createdAt));
-      console.log(chats[0]);
       const friend = await db
         .select()
         .from(users)
@@ -194,12 +192,9 @@ router.get("/users/:id", async (req, res) => {
           lastTime: chats[0].createdAt,
         };
       }
-
       friendsWithLastChat.push(row);
-
-      console.log(friend[0]);
     }
-    console.log("friendsWithLastChat", friendsWithLastChat);
+    console.log("friendsWithLastChat: ", friendsWithLastChat);
 
     return res
       .status(200)
@@ -268,8 +263,6 @@ router.get("/user/request/:id/:friendId", async (req, res) => {
     return res.status(200).json({
       message: "friend request sent",
     });
-
-    // return res.status(200).json({ message: "Successfully sent request" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error });
@@ -286,6 +279,7 @@ router.get("/:id/:search", async (req, res) => {
         message: "search is required",
       });
     }
+
     const usersData = await db
       .select()
       .from(users)
@@ -294,9 +288,10 @@ router.get("/:id/:search", async (req, res) => {
           users.id
         } <> ${id}`
       );
-    return res.status(200).json({ users: usersData, message: "Success!" });
+
+    return res.status(200).json({ users: usersData, message: "success" });
   } catch (error) {
-    res.status(404).json({ error });
+    res.status(404).json({ error: error.message });
   }
 });
 

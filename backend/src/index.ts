@@ -48,6 +48,11 @@ io.on("connection", (socket) => {
   io.emit("onlineUsers", Object.keys(onlineUsers));
 
   socket.on("typing", (obj) => {
+    //the data we get here
+    // senderId: context.user!.id,
+    // receiverId: context.select.id,
+    // message: context.message.message,
+    // messageType: context.message.messageType,
     if (Object.keys(onlineUsers).includes(obj.receiverId)) {
       io.to(onlineUsers[obj.receiverId]).emit("typing", obj);
     }

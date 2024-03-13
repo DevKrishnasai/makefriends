@@ -8,6 +8,7 @@ export const useFriends = () => {
   const context = useContext(Context);
   const controller = new AbortController();
 
+  //get all friends
   useEffect(() => {
     const fetchFriends = async () => {
       setLoading(true);
@@ -25,12 +26,13 @@ export const useFriends = () => {
           }
         );
         const data = await friendsData.json();
+
         console.log("i am from side bar", data);
-        if (typeof data.users === "object") {
-          context.setFriends(data.users);
-        } else {
-          context.setFriends([]);
-        }
+        // if (typeof data.users === "object") {
+        context.setFriends((prev) => data.users);
+        // } else {
+        // context.setFriends([]);
+        // }
       } catch (error) {
         console.log(error);
       } finally {
