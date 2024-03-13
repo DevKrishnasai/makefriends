@@ -7,7 +7,13 @@ export const users = pgTable("users", {
   email: varchar("email").notNull(),
   bio: text("bio").default("Hey ,I am using MakeFriends"),
   friends: json("friends").default({ friends: [] }),
-  friendRequests: json("friendRequest").default({ friends: [] }),
+  friendRequestsRecieved: json("friend_request_recieved").default({
+    friends: [],
+  }),
+  friendRequestsSent: json("friend_request_sent").default({ friends: [] }),
+  logs: json("logs").default({
+    logs: [],
+  }),
   createdAt: timestamp("created_at", {
     mode: "string",
     withTimezone: true,
@@ -26,5 +32,3 @@ export const messages = pgTable("messages", {
     withTimezone: true,
   }).defaultNow(),
 });
-
-export type userType = typeof users.$inferSelect;
