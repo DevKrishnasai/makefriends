@@ -66,6 +66,10 @@ const Notifications = ({
               bio: accept.bio,
               createdAt: accept.createdAt,
               friends: accept.friends,
+              message: "",
+              messageFrom: "",
+              messageType: "",
+              lastTime: new Date(),
             },
           ]);
         }
