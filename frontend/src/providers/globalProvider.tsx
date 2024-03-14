@@ -1,5 +1,5 @@
 "use client";
-import { IContext, IFriends, IMessage, IUser, MessageType } from "@/lib/types";
+import { IContext, IFriends, IMessage, IUser } from "@/lib/types";
 import React, { ReactNode, createContext, useState } from "react";
 
 export const Context = createContext<IContext>({
@@ -15,37 +15,41 @@ export const Context = createContext<IContext>({
     senderId: "",
   },
   setMessage: () => {},
-  typeOfMessage: "text",
-  setTypeOfMessage: () => {},
   messages: [],
-  setMessages: () => {},
+  setMessages: () => [],
   friends: [],
-  setFriends: () => {},
+  setFriends: () => [],
   search: "",
-  setSearch: () => {},
+  setSearch: () => "",
   searchFriends: [],
-  setSearchFriends: () => {},
+  setSearchFriends: () => [],
   notifications: [],
-  setNotifications: () => {},
+  setNotifications: () => [],
   onlineUsers: [],
-  setOnlineUsers: () => {},
+  setOnlineUsers: () => [],
 });
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [select, setSelect] = useState<IUser | null>(null);
+  //for holding login user information
   const [user, setUser] = useState<IUser | null>(null);
+  //for holding selected user information
+  const [select, setSelect] = useState<IUser | null>(null);
+  //for holding message (now sending)
   const [message, setMessage] = useState<IMessage>({
     id: "",
-    messageType: "text",
     message: "",
-    receiverId: "",
+    messageType: "text",
     senderId: "",
+    receiverId: "",
   });
+  //for holding messages
   const [messages, setMessages] = useState<IMessage[]>([]);
+  //for holding friends
   const [friends, setFriends] = useState<IFriends[]>([]);
-  const [typeOfMessage, setTypeOfMessage] = useState<MessageType>("text");
+
   const [search, setSearch] = useState<string>("");
   const [searchFriends, setSearchFriends] = useState<IUser[]>([]);
+
   const [notifications, setNotifications] = useState<IUser[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
@@ -58,8 +62,6 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setMessage,
         user,
         setUser,
-        typeOfMessage,
-        setTypeOfMessage,
         messages,
         setMessages,
         friends,

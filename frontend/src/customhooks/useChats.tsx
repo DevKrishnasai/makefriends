@@ -27,7 +27,8 @@ export const useChats = () => {
           }
         );
         const json = await data.json();
-        context.setMessages(json.chats);
+        context.setMessages(() => [...json.chats]);
+        console.log("chat fetched successfully", json.chats);
       } catch (error) {
         console.log(error);
       } finally {

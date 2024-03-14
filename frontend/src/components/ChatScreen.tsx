@@ -30,16 +30,20 @@ const ChatScreen = () => {
     if (socketContext?.socket) {
       if (context.select && context.select.id && context.message.message) {
         if (context.message.message.length > 0) {
-          socketContext?.socket.emit("typing", {
-            senderId: context.user!.id,
-            receiverId: context.select.id,
-            message: context.message.message,
-            messageType: context.message.messageType,
-          });
+          if (context.onlineUsers.includes(context.select.id)) {
+            socketContext?.socket.emit("typing", {
+              senderId: context.user!.id,
+              receiverId: context.select.id,
+              message: context.message.message,
+              messageType: context.message.messageType,
+            });
+          }
         }
       }
       socketContext.socket.on("typing", (obj) => {
-        socketContext.setTyping(obj);
+        if (context.select && obj.senderId === context.select!.id) {
+          socketContext.setTyping(obj);
+        }
         // const typingFriends = context.friends.map((friend)=> friend.id === obj.)
       });
     }

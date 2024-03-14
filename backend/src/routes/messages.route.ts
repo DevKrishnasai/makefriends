@@ -6,6 +6,7 @@ import { io, onlineUsers } from "../index";
 
 const router = express.Router();
 
+//get chats
 router.post("/get", async (req, res) => {
   const { senderId, receiverId } = req.body;
   try {

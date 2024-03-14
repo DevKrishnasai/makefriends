@@ -10,6 +10,17 @@ export interface IUser {
   createdAt?: Date;
 }
 
+export interface IMessage {
+  id?: string;
+  senderId: string;
+  receiverId: string;
+  message?: string;
+  messageType: MessageType;
+  createdAt?: Date;
+}
+
+export type MessageType = "text" | "image" | "file";
+
 export interface IContext {
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
@@ -17,8 +28,6 @@ export interface IContext {
   setSelect: React.Dispatch<React.SetStateAction<IUser | null>>;
   message: IMessage;
   setMessage: React.Dispatch<React.SetStateAction<IMessage>>;
-  typeOfMessage: MessageType;
-  setTypeOfMessage: React.Dispatch<React.SetStateAction<MessageType>>;
   messages: IMessage[];
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
   friends: IFriends[];
@@ -33,24 +42,18 @@ export interface IContext {
   setOnlineUsers: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export interface IMessage {
-  id?: string;
-  senderId: string;
-  receiverId: string;
-  message?: string;
-  messageType: MessageType;
-  createdAt?: Date;
+export interface IFriends extends IUser {
+  message: string;
+  messageType: MessageType | "";
+  messageFrom: string;
+  lastTime: Date;
 }
-
-export type MessageType = "text" | "image" | "file";
 
 export interface ISocketContext {
   socket: Socket | null;
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
   typing: typing;
   setTyping: React.Dispatch<React.SetStateAction<typing>>;
-  messages: friendsTyping[];
-  setMessages: React.Dispatch<React.SetStateAction<friendsTyping[]>>;
 }
 
 export interface IAccept {
@@ -64,20 +67,13 @@ export interface IAccept {
   createdAt?: Date;
 }
 
-export interface IFriends extends IUser {
-  message: string;
-  messageType: MessageType | "";
-  messageFrom: string;
-  lastTime: Date;
-}
-
-export interface friendsTyping {
-  senderId: string;
-  receiverId: string;
-  message: string;
-  createdAt: Date;
-  messageType: MessageType | "";
-}
+// export interface friendsTyping {
+//   senderId: string;
+//   receiverId: string;
+//   message: string;
+//   createdAt: Date;
+//   messageType: MessageType | "";
+// }
 
 export interface typing {
   senderId: string;

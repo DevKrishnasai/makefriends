@@ -15,7 +15,7 @@ const ChatBubble = ({
   const isCurrentUser = message.senderId === context.user?.id;
 
   if (message.message?.length && message.id === "typing") {
-    return (
+    return message.senderId === context.select!.id ? (
       <div className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}>
         <div className={`chat-image avatar ${isCurrentUser ? "md-6" : "mb-6"}`}>
           <div className="w-10 rounded-full">
@@ -41,7 +41,7 @@ const ChatBubble = ({
           <span className="loading loading-dots loading-xs self-end"></span>
         </div>
       </div>
-    );
+    ) : null;
   }
 
   return (

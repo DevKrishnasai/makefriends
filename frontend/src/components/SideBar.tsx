@@ -14,13 +14,13 @@ const SideBar = () => {
   const context = useContext(Context);
   const socketcontext = useContext(SocketContext);
 
+  //need to modify
   useEffect(() => {
     if (socketcontext?.socket) {
       socketcontext?.socket.on("new_message", (msg) => {
         const userIndex = context.friends.findIndex(
           (friend) => friend.id === msg.senderId
         );
-        console.log(userIndex);
         const prevFriends = context.friends.filter(
           (friend) => friend.id !== msg.senderId
         );
@@ -35,7 +35,7 @@ const SideBar = () => {
         }
       });
     }
-  }, [socketcontext?.typing.message]);
+  }, [context.friends]);
 
   return !loading ? (
     <ScrollArea>

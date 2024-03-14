@@ -29,7 +29,7 @@ export const useFriends = () => {
 
         console.log("i am from side bar", data);
         // if (typeof data.users === "object") {
-        context.setFriends((prev) => data.users);
+        context.setFriends(data.users);
         // } else {
         // context.setFriends([]);
         // }

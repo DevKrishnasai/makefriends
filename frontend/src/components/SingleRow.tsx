@@ -1,6 +1,7 @@
 "use client";
 import { IUser } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { SocketContext } from "@/providers/SocketProvider";
 import { Context } from "@/providers/globalProvider";
 import { useTheme } from "next-themes";
 import React, { useContext } from "react";
@@ -17,6 +18,7 @@ const SingleRow = ({
 }) => {
   const { theme } = useTheme();
   const context = useContext(Context);
+  const socketcontext = useContext(SocketContext);
   const isOnline = context?.onlineUsers.some((id) => id === user.id);
 
   return (
@@ -33,11 +35,18 @@ const SingleRow = ({
             theme === "light" &&
             " bg-black text-white  ")
       )}
-      onClick={() =>
-        select
-          ? onSelect((prev) => (prev!.id === user.id ? null : user))
-          : onSelect(user)
-      }
+      onClick={() => {
+        if (select) {
+          onSelect((prev) => (prev!.id === user.id ? null : user));
+        } else {
+          onSelect(user);
+        }
+        socketcontext?.setTyping({
+          message: "",
+          receiverId: "",
+          senderId: "",
+        });
+      }}
     >
       <div className={`avatar ${isOnline ? "online" : ""} `}>
         <div className="w-12 rounded-full">
