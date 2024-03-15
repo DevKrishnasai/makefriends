@@ -4,18 +4,18 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const client = new Pool({
-  connectionString: process.env.DB_URI,
-});
+// const client = new Pool({
+//   connectionString: process.env.DB_URI,
+// });
 
 // or
-// const client = new Client({
-//   host: process.env.DB_HOST,
-//   port: 5432,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
+const client = new Client({
+  host: process.env.DB_HOST,
+  port: 5432,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
 
 client
   .connect()
