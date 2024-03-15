@@ -1,57 +1,21 @@
 "use client";
-import { SocketContext } from "@/providers/SocketProvider";
-import { useState, useEffect, useContext } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-export default function useUserActive() {
-  const [isTabActive, setIsTabActive] = useState(true);
-  const socketcontext = useContext(SocketContext);
+const useUserActive = () => {
+  const [isTabVisible, setIsTabVisible] = useState(true);
+
+  const handleVisibilityChange = useCallback(() => {
+    setIsTabVisible(document.visibilityState === "visible");
+  }, []);
 
   useEffect(() => {
-    const onFocus = () => setIsTabActive(true);
-    const onBlur = () => {
-      setIsTabActive(false);
-      console.log("Socket Context:", socketcontext);
-      if (socketcontext?.socket) {
-        console.log("Closing socket connection...");
-        socketcontext.socket.close();
-        socketcontext.setSocket(null);
-      }
-    };
-
-    const onVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        setIsTabActive(true);
-      } else {
-        console.log(
-          "Tab visibility changed to hidden. Disconnecting from server..."
-        );
-        setIsTabActive(false);
-        // Disconnect from the server when tab becomes inactive
-        if (socketcontext?.socket) {
-          console.log("Closing socket connection...");
-          socketcontext.socket.close();
-          socketcontext.setSocket(null);
-        }
-      }
-    };
-
-    window.addEventListener("focus", onFocus);
-    window.addEventListener("blur", onBlur);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      window.removeEventListener("focus", onFocus);
-      window.removeEventListener("blur", onBlur);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      console.log("Component unmounted. Closing socket connection...");
-      // Ensure socket connection is closed when component unmounts
-      if (socketcontext?.socket) {
-        console.log("Closing socket connection...");
-        socketcontext.socket.close();
-        socketcontext.setSocket(null);
-      }
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
-  return isTabActive;
-}
+  return isTabVisible;
+};
+
+export default useUserActive;

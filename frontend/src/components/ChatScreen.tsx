@@ -23,7 +23,7 @@ const ChatScreen = () => {
     setTimeout(() => {
       lastMsg.current?.scrollIntoView({ behavior: "instant" });
     }, 100);
-  }, [context.messages.length, socketContext?.typing.message]);
+  }, [context.messages.length, socketContext?.typing.message, context.select]);
 
   //sending and recieving realtime messages from online users
   useEffect(() => {

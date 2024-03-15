@@ -1,5 +1,11 @@
 "use client";
-import { ISocketContext, IUser, typing } from "@/lib/types";
+import {
+  IMessage,
+  ISocketContext,
+  IUnSeenMessages,
+  IUser,
+  typing,
+} from "@/lib/types";
 import {
   ReactNode,
   createContext,
@@ -23,10 +29,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     receiverId: "",
     message: "",
   });
+  //for unseen messages
+  const [unSeenMessages, setUnSeenMessages] = useState<IUnSeenMessages[]>([]);
 
   const { theme } = useTheme();
   const context = useContext(Context);
   let newSocket: Socket | null = null;
+
   useEffect(() => {
     if (context.user) {
       newSocket = io(`${process.env.NEXT_PUBLIC_BASE_URL}`, {
@@ -43,7 +52,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
       newSocket.on("new_message", (msg) => {
         if (context.select?.id === msg["senderId"]) {
-          console.log("me in new_message");
           context.setMessages((prev) => [...prev, { ...msg }]);
           setTyping({
             senderId: msg.senderId,
@@ -57,6 +65,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         const prevFriends = context.friends.filter(
           (friend) => friend.id !== msg.senderId
         );
+
         if (userIndex !== -1) {
           const user = {
             ...context.friends[userIndex],
@@ -64,7 +73,23 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             messageType: msg.messageType,
             messageFrom: msg.senderId,
           };
-          context.setFriends([user, ...prevFriends]);
+          context.setFriends((prev) => [user, ...prevFriends]);
+          if (context.select?.id !== msg.senderId) {
+            const userIndex = unSeenMessages.findIndex(
+              (user) => user.senderId === msg.senderId
+            );
+            if (userIndex == -1) {
+              setUnSeenMessages((prev) => [
+                ...prev,
+                { senderId: msg.senderId, count: 1 },
+              ]);
+            } else {
+              setUnSeenMessages((prev) => [
+                ...prev,
+                { ...prev[userIndex], count: prev[userIndex].count + 1 },
+              ]);
+            }
+          }
         }
       });
 
@@ -113,6 +138,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         setSocket,
         typing,
         setTyping,
+        unSeenMessages,
+        setUnSeenMessages,
       }}
     >
       {children}

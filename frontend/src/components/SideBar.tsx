@@ -51,6 +51,10 @@ const SideBar = () => {
           </div>
         ) : (
           context.friends.map((friend: IFriends) => {
+            const count = socketcontext?.unSeenMessages.findIndex(
+              (fri) => fri.senderId === friend.id
+            );
+
             return (
               <SingleRow
                 key={friend.id}
@@ -58,6 +62,7 @@ const SideBar = () => {
                 select={context.select}
                 onSelect={context.setSelect}
                 lastMsg={friend.message}
+                unSeen={count || 0}
               />
             );
           })

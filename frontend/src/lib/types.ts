@@ -47,6 +47,7 @@ export interface IFriends extends IUser {
   messageType: MessageType | "";
   messageFrom: string;
   lastTime: Date;
+  unSeenMessages?: number;
 }
 
 export interface ISocketContext {
@@ -54,6 +55,8 @@ export interface ISocketContext {
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
   typing: typing;
   setTyping: React.Dispatch<React.SetStateAction<typing>>;
+  unSeenMessages: IUnSeenMessages[];
+  setUnSeenMessages: React.Dispatch<React.SetStateAction<IUnSeenMessages[]>>;
 }
 
 export interface IAccept {
@@ -79,4 +82,9 @@ export interface typing {
   senderId: string;
   receiverId: string;
   message: string;
+}
+
+export interface IUnSeenMessages {
+  senderId: string;
+  count: number;
 }

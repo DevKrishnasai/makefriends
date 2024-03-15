@@ -4,18 +4,34 @@ import SideBar from "@/components/SideBar";
 import { Input } from "@/components/ui/input";
 import useInitialFetch from "@/customhooks/useInitialFetch";
 import Loading from "@/components/Loading";
-import { SocketProvider } from "@/providers/SocketProvider";
+import { SocketContext, SocketProvider } from "@/providers/SocketProvider";
 import { useContext, useEffect } from "react";
 import { Context } from "@/providers/globalProvider";
 import SearchResultScreen from "@/components/SearchResultScreen";
 import useUserActive from "@/customhooks/useUserActive";
+import { io } from "socket.io-client";
 
 const page = () => {
   const userLoading = useInitialFetch();
   const context = useContext(Context);
+  const socketcontext = useContext(SocketContext);
   const controller = new AbortController();
-  // const loading = useUserActive();
-  // console.log(loading);
+  const loading = useUserActive();
+  useEffect(() => {
+    console.log("loading:", loading);
+    console.log(socketcontext);
+    if (socketcontext) {
+      if (!loading) {
+        console.log("disconnecting");
+        console.log("socketcontext:", socketcontext); // Debug statement
+        socketcontext?.socket?.off();
+      } else {
+        console.log("reconnecting");
+        console.log("socketcontext:", socketcontext); // Debug statement
+        socketcontext?.socket?.connect();
+      }
+    }
+  }, [loading]);
 
   //asking for notification permission for desktop notifications
   useEffect(() => {

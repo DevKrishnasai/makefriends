@@ -57,10 +57,8 @@ router.put("/request-accept-or-reject", async (req, res) => {
       .where(eq(users.id, id));
 
     if (status === "Accepted") {
-      console.log("in Accept");
       let friends: string[] = acceptUser[0].friends["friends"];
       if (!friends.includes(id)) {
-        console.log("in Accept inside");
         friends.push(id);
         io.to(onlineUsers[acceptId]).emit("accepted", user[0]);
       }
@@ -194,7 +192,6 @@ router.get("/users/:id", async (req, res) => {
       }
       friendsWithLastChat.push(row);
     }
-    console.log("friendsWithLastChat: ", friendsWithLastChat);
 
     return res
       .status(200)

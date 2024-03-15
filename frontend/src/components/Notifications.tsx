@@ -12,7 +12,6 @@ import { Context } from "@/providers/globalProvider";
 import { useTheme } from "next-themes";
 import { useContext, useEffect, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
-import { Button } from "./ui/button";
 import { Check, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { IAccept } from "@/lib/types";

@@ -30,7 +30,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.json({ message: "serrver working" });
+  res.json({ message: "Server is running" });
 });
 
 // Routes
@@ -44,22 +44,29 @@ io.on("connection", (socket) => {
   if (userId !== undefined) {
     onlineUsers[userId] = socket.id;
   }
-  console.log(`user with id-${userId} joined`);
+  console.log(`User with ID ${userId} connected`);
   io.emit("onlineUsers", Object.keys(onlineUsers));
 
   socket.on("typing", (obj) => {
-    //the data we get here
-    // senderId: context.user!.id,
-    // receiverId: context.select.id,
-    // message: context.message.message,
-    // messageType: context.message.messageType,
-    if (Object.keys(onlineUsers).includes(obj.receiverId)) {
+    if (onlineUsers[obj.receiverId]) {
       io.to(onlineUsers[obj.receiverId]).emit("typing", obj);
     }
   });
 
+  socket.on("online", (id) => {
+    console.log("online", id);
+    onlineUsers[userId] = socket.id;
+    io.emit("onlineUsers", Object.keys(onlineUsers));
+  });
+
+  socket.on("offline", (id) => {
+    console.log("offline", id);
+    delete onlineUsers[id];
+    io.emit("onlineUsers", Object.keys(onlineUsers));
+  });
+
   socket.on("disconnect", () => {
-    console.log(`user with id-${userId} disconnected`);
+    console.log(`User with ID ${userId} disconnected`);
     delete onlineUsers[userId];
     io.emit("onlineUsers", Object.keys(onlineUsers));
   });
