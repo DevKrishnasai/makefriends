@@ -8,7 +8,7 @@ const IntroPage = () => {
     <div className="w-full h-full ">
       <div className="mx-auto h-[calc(100vh-72px)] w-[60%] text-center flex flex-col justify-center items-center gap-8">
         <p className="text-5xl font-bold text-black  dark:text-white ">
-          A powerful Chat Application with a variety of realtime functionalitys
+          A powerful Chat Application with a variety of realtime functionalities
         </p>
         <div className="flex justify-center items-center gap-3 z-0">
           {userId ? (
