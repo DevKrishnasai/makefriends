@@ -1,37 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-## Getting Started
-First, run the development server:
+# MakeFriends
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+MakeFriends is a comprehensive chat application developed using TypeScript, Next.js, Node.js, Express.js, PostgreSQL, and Drizzle ORM. The project showcases real-time communication features and an intuitive user interface.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **User Authentication**: Implemented login functionality with GitHub and Google for seamless user authentication.
+- **Real-Time Messaging**: Enabled instant communication using sockets for real-time messaging.
+- **Live Feedback**: Integrated a real-time typing indicator for live feedback on user interactions.
+- **Core Features**: Designed and implemented features such as sending messages, friend requests, accepting/rejecting requests, and online status indicators.
+- **Multimedia Exchange**: Enabled users to exchange multimedia content including photos, files, and voice messages.
+- **User Interface**: Designed an attractive UI with customizable black and white theme options.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Technologies Used
 
-## Learn More
+### Frontend
+- **Next.js**: Framework for building the frontend.
+- **TypeScript**: Language for writing type-safe code.
+- **Shad CN**: UI components.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
 
-To learn more about Next.js, take a look at the following resources:
+### Backend
+- **Node.js**: JavaScript runtime for the backend.
+- **Express.js**: Web framework for Node.js.
+- **PostgreSQL**: Relational database.
+- **Drizzle ORM**: ORM for database interactions.
+- **Sockets**: Real-time communication.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The project is divided into two main folders:
 
-## Deploy on Vercel
+- **frontend**: Contains the Next.js application along with Shad CN and Tailwind CSS for styling.
+- **backend**: Contains the Node.js and Express.js application with socket implementation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To run this project locally, follow these steps:
 
+### Backend
 
+1. Navigate to the `backend` folder:
+   ```sh
+   cd backend
+   ```
+2. Install the dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the backend server:
+   ```sh
+   npm start
+   ```
 
+### Frontend
+
+1. Navigate to the `frontend` folder:
+   ```sh
+   cd frontend
+   ```
+2. Install the dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the frontend server:
+   ```sh
+   npm run dev
+   ```
+
+## Conclusion
+
+My experience in developing MakeFriends has not only strengthened my technical skills in Full Stack Web Development but also instilled a sense of responsibility and autonomy in tackling complex projects independently. MakeFriends stands as a testament to the skills and knowledge I have gained.
+
+For more information or to contribute, please feel free to open an issue or submit a pull request.
