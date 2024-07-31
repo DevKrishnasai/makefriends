@@ -28,14 +28,35 @@
 
 // export const db = drizzle(client);
 
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+// import { drizzle } from "drizzle-orm/postgres-js";
+// import postgres from "postgres";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// const connectionString = process.env.DB_URI;
+
+// // Disable prefetch as it is not supported for "Transaction" pool mode
+// export const client = postgres(connectionString, { prepare: false });
+// export const db = drizzle(client);
+
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const connectionString = process.env.DB_URI;
+const client = new Pool({
+  connectionString: process.env.DB_URI,
+});
 
-// Disable prefetch as it is not supported for "Transaction" pool mode
-export const client = postgres(connectionString, { prepare: false });
+client
+  .connect()
+  .then(() => {
+    console.log("db connection established");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 export const db = drizzle(client);
