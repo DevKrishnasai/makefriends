@@ -15,9 +15,7 @@ const app = express();
 const httpserver = http.createServer(app);
 export const io = new Server(httpserver, {
   cors: {
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST"],
-    credentials: true,
+    origin: [process.env.FRONTEND_URL1, process.env.FRONTEND_URL2],
   },
 });
 
@@ -34,8 +32,8 @@ cron.schedule("*/1 * * * *", async () => {
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    //allow 2 frontend urls to access the server
+    origin: [process.env.FRONTEND_URL1, process.env.FRONTEND_URL2],
   })
 );
 
