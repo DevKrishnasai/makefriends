@@ -18,7 +18,7 @@ const app = express();
 const httpserver = http.createServer(app);
 export const io = new Server(httpserver, {
   cors: {
-    origin: [process.env.FRONTEND_URL1, process.env.FRONTEND_URL2],
+    origin: "*",
   },
 });
 
@@ -33,10 +33,16 @@ cron.schedule("*/1 * * * *", async () => {
 
 // Middlewares
 app.use(express.json());
+// app.use(
+//   cors({
+//     //allow 2 frontend urls to access the server
+//     origin: [process.env.FRONTEND_URL1, process.env.FRONTEND_URL2],
+//   })
+// );
+
 app.use(
   cors({
-    //allow 2 frontend urls to access the server
-    origin: [process.env.FRONTEND_URL1, process.env.FRONTEND_URL2],
+    origin: "*",
   })
 );
 
