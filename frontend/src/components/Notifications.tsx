@@ -73,7 +73,7 @@ const Notifications = ({
           ]);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     if (accept.id) {

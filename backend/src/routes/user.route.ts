@@ -78,7 +78,7 @@ router.put("/request-accept-or-reject", async (req, res) => {
       message: `request ${status.toLowerCase()}`,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 });
 
@@ -261,7 +261,7 @@ router.get("/user/request/:id/:friendId", async (req, res) => {
       message: "friend request sent",
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(404).json({ error });
   }
 });

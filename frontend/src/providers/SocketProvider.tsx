@@ -1,11 +1,5 @@
 "use client";
-import {
-  IMessage,
-  ISocketContext,
-  IUnSeenMessages,
-  IUser,
-  typing,
-} from "@/lib/types";
+import { IMessage, ISocketContext, IUser, typing } from "@/lib/types";
 import {
   ReactNode,
   createContext,
@@ -17,6 +11,7 @@ import { Socket, io } from "socket.io-client";
 import { Context } from "./globalProvider";
 import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
+import useUserActive from "@/customhooks/useUserActive";
 
 export const SocketContext = createContext<ISocketContext | null>(null);
 
@@ -29,12 +24,23 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     receiverId: "",
     message: "",
   });
-  //for unseen messages
-  const [unSeenMessages, setUnSeenMessages] = useState<IUnSeenMessages[]>([]);
 
   const { theme } = useTheme();
   const context = useContext(Context);
   let newSocket: Socket | null = null;
+
+  const loading = useUserActive();
+  useEffect(() => {
+    if (socket) {
+      if (!loading) {
+        console.log("disconnecting");
+        socket?.emit("offline", context.user?.id);
+      } else {
+        console.log("reconnecting");
+        socket?.emit("online", context.user?.id);
+      }
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (context.user) {
@@ -58,6 +64,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             receiverId: msg.receiverId,
             message: "",
           });
+          return;
         }
         const userIndex = context.friends.findIndex(
           (friend) => friend.id === msg.senderId
@@ -67,29 +74,21 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         );
 
         if (userIndex !== -1) {
+          const count = context.friends[userIndex].unSeenMessages || 0;
+          // console.log("count-->", count);
+          // console.log("@@@@@@@", context.friends[userIndex]);
           const user = {
             ...context.friends[userIndex],
             message: msg.message,
             messageType: msg.messageType,
             messageFrom: msg.senderId,
+            unSeenMessages:
+              (context.friends[userIndex].unSeenMessages || 0) + 1,
           };
+          // console.log("in unseenblock--> ", userIndex);
+          // console.log("user unseen-->", user);
+
           context.setFriends((prev) => [user, ...prevFriends]);
-          if (context.select?.id !== msg.senderId) {
-            const userIndex = unSeenMessages.findIndex(
-              (user) => user.senderId === msg.senderId
-            );
-            if (userIndex == -1) {
-              setUnSeenMessages((prev) => [
-                ...prev,
-                { senderId: msg.senderId, count: 1 },
-              ]);
-            } else {
-              setUnSeenMessages((prev) => [
-                ...prev,
-                { ...prev[userIndex], count: prev[userIndex].count + 1 },
-              ]);
-            }
-          }
         }
       });
 
@@ -108,13 +107,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       });
 
       newSocket.on("accepted", (friend) => {
-        console.log("accepted", friend);
+        // console.log("accepted", friend);
         toast.success(`${friend.username} is now friend`);
         context.setFriends((prev) => [...prev, { ...friend }]);
       });
 
       newSocket.on("rejected", (friend) => {
-        console.log("rejected", friend);
+        // console.log("rejected", friend);
         toast.error(`${friend.username} rejected you`);
       });
     } else {
@@ -138,8 +137,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         setSocket,
         typing,
         setTyping,
-        unSeenMessages,
-        setUnSeenMessages,
       }}
     >
       {children}

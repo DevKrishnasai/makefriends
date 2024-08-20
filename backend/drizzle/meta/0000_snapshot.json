@@ -1,5 +1,5 @@
 {
-  "id": "83a02ca2-88bc-403c-998d-22834bd92b0a",
+  "id": "df3c5d4a-e8f8-434b-b0c0-387c7c836b9b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -12,6 +12,12 @@
           "name": "id",
           "type": "varchar",
           "primaryKey": true,
+          "notNull": true
+        },
+        "message_from_and_by": {
+          "name": "message_from_and_by",
+          "type": "varchar",
+          "primaryKey": false,
           "notNull": true
         },
         "content": {
@@ -42,7 +48,8 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -109,14 +116,36 @@
           "name": "bio",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Hey ,I am using MakeFriends'"
         },
         "friends": {
           "name": "friends",
-          "type": "varchar[]",
+          "type": "json",
           "primaryKey": false,
           "notNull": false,
-          "default": []
+          "default": "'{\"friends\":[]}'::json"
+        },
+        "friend_request_recieved": {
+          "name": "friend_request_recieved",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{\"friends\":[]}'::json"
+        },
+        "friend_request_sent": {
+          "name": "friend_request_sent",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{\"friends\":[]}'::json"
+        },
+        "logs": {
+          "name": "logs",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{\"logs\":[]}'::json"
         },
         "created_at": {
           "name": "created_at",

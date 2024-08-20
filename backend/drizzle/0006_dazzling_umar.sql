@@ -1,1 +1,0 @@
-ALTER TABLE "messages" ADD CONSTRAINT "messages_id_unique" UNIQUE("id");

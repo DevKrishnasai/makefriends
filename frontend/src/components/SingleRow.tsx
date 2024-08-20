@@ -76,14 +76,14 @@ const SingleRow = ({
         <p className="text-[10px]">{lastMsg}</p>
       </div>
 
-      <span
+      {/* <span
         className={cn(
           "absolute animate-pulse top-8 right-5 transform translate-x-1/2 -translate-y-1/2 h-2 w-2 flex items-center justify-center text-xs font-bold bg-transparent text-black border-1 border-black rounded-full",
           theme === "light" ? "bg-black text-white " : "bg-white text-black "
         )}
       >
         {unSeen}
-      </span>
+      </span> */}
     </div>
   );
 };

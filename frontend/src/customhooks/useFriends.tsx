@@ -27,14 +27,14 @@ export const useFriends = () => {
         );
         const data = await friendsData.json();
 
-        console.log("i am from side bar", data);
+        // console.log("i am from side bar", data);
         // if (typeof data.users === "object") {
         context.setFriends(data.users);
         // } else {
         // context.setFriends([]);
         // }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }

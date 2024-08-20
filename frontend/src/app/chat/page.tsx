@@ -9,29 +9,16 @@ import { useContext, useEffect } from "react";
 import { Context } from "@/providers/globalProvider";
 import SearchResultScreen from "@/components/SearchResultScreen";
 import useUserActive from "@/customhooks/useUserActive";
-import { io } from "socket.io-client";
 
 const page = () => {
+  // for setting user data in context
   const userLoading = useInitialFetch();
+  // global context for data sharing
   const context = useContext(Context);
+  // socket context for socket connection and disconnection
   const socketcontext = useContext(SocketContext);
   const controller = new AbortController();
-  const loading = useUserActive();
-  useEffect(() => {
-    console.log("loading:", loading);
-    console.log(socketcontext);
-    if (socketcontext) {
-      if (!loading) {
-        console.log("disconnecting");
-        console.log("socketcontext:", socketcontext); // Debug statement
-        socketcontext?.socket?.off();
-      } else {
-        console.log("reconnecting");
-        console.log("socketcontext:", socketcontext); // Debug statement
-        socketcontext?.socket?.connect();
-      }
-    }
-  }, [loading]);
+  // checking user is active or not (in tab)
 
   //asking for notification permission for desktop notifications
   useEffect(() => {
@@ -64,7 +51,7 @@ const page = () => {
         let userData = await data.json();
         context.setSearchFriends(userData.users);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     if (!context.search) {
@@ -96,7 +83,7 @@ const page = () => {
         let userData = await data.json();
         context.setNotifications(userData.users);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     if (context.user) {
@@ -114,7 +101,7 @@ const page = () => {
         ) : (
           <>
             <div className="flex flex-col w-1/3 border rounded-md border-black dark:border-white relative">
-              <form className="p-2 z-0">
+              <form className="p-2 z-0" onSubmit={(e) => e.preventDefault()}>
                 <Input
                   type="search"
                   placeholder="search..."

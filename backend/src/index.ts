@@ -4,6 +4,8 @@ import http from "http";
 import { Server } from "socket.io";
 import userRoute from "./routes/user.route";
 import cors from "cors";
+import axios from "axios";
+import cron from "node-cron";
 import messagesRoute from "./routes/messages.route";
 dotenv.config();
 
@@ -15,9 +17,17 @@ export const io = new Server(httpserver, {
   cors: {
     origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
     credentials: true,
   },
+});
+
+cron.schedule("*/1 * * * *", async () => {
+  try {
+    const response = await axios.get(process.env.URL);
+    console.log("Server pinged successfully:", response.data);
+  } catch (error) {
+    console.error("Error pinging server:", error.message);
+  }
 });
 
 // Middlewares

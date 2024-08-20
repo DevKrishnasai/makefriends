@@ -31,7 +31,7 @@ const SearchResultScreen = () => {
           },
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     if (reqUser) {

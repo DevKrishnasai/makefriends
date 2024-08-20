@@ -55,8 +55,6 @@ export interface ISocketContext {
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
   typing: typing;
   setTyping: React.Dispatch<React.SetStateAction<typing>>;
-  unSeenMessages: IUnSeenMessages[];
-  setUnSeenMessages: React.Dispatch<React.SetStateAction<IUnSeenMessages[]>>;
 }
 
 export interface IAccept {

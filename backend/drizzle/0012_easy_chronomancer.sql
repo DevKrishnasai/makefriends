@@ -1,1 +1,0 @@
-ALTER TABLE "users" ALTER COLUMN "friends" SET DEFAULT '{"friends":[]}'::json;

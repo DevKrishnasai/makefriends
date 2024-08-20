@@ -9,6 +9,7 @@ const useUserActive = () => {
   }, []);
 
   useEffect(() => {
+    console.log("useUserActive");
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
