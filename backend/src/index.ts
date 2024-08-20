@@ -9,6 +9,9 @@ import cron from "node-cron";
 import messagesRoute from "./routes/messages.route";
 dotenv.config();
 
+console.log(process.env.FRONTEND_URL1);
+console.log(process.env.FRONTEND_URL2);
+
 const port = process.env.PORT || 5000;
 const api = process.env.API;
 const app = express();
